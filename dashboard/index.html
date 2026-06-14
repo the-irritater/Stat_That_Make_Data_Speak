@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stats That Make Data Speak — Execution Dashboard</title>
+    <meta name="description" content="Track your 8-week execution plan for Stats That Make Data Speak — LinkedIn posts, notebooks, case studies, and portfolio progress.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Animated background particles -->
+    <div class="bg-particles" id="bgParticles"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo-section">
+                <div class="logo-icon">
+                    <svg viewBox="0 0 40 40" fill="none">
+                        <rect x="4" y="22" width="6" height="14" rx="2" fill="#2B6CB0"/>
+                        <rect x="13" y="14" width="6" height="22" rx="2" fill="#4299E1"/>
+                        <rect x="22" y="8" width="6" height="28" rx="2" fill="#63B3ED"/>
+                        <rect x="31" y="4" width="6" height="32" rx="2" fill="#E53E3E"/>
+                    </svg>
+                </div>
+                <div>
+                    <h1>Stats That Make Data Speak</h1>
+                    <p class="subtitle">8-Week Execution Dashboard</p>
+                </div>
+            </div>
+            <div class="header-stats">
+                <div class="stat-pill" id="overallProgress">
+                    <span class="stat-value">0%</span>
+                    <span class="stat-label">Complete</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <!-- Progress Overview Cards -->
+        <section class="progress-section" id="progressSection">
+            <div class="section-header">
+                <h2>Progress Overview</h2>
+                <button class="reset-btn" id="resetBtn" title="Reset all progress">
+                    <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16">
+                        <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd"/>
+                    </svg>
+                    Reset
+                </button>
+            </div>
+            <div class="progress-cards">
+                <div class="progress-card" data-type="posts">
+                    <div class="progress-ring-container">
+                        <svg class="progress-ring" viewBox="0 0 120 120">
+                            <circle class="progress-ring-bg" cx="60" cy="60" r="52"/>
+                            <circle class="progress-ring-fill" cx="60" cy="60" r="52" id="postsRing"/>
+                        </svg>
+                        <span class="progress-ring-text" id="postsCount">0/30</span>
+                    </div>
+                    <h3>LinkedIn Posts</h3>
+                    <p>Day 31–60 captions posted</p>
+                </div>
+                <div class="progress-card" data-type="visuals">
+                    <div class="progress-ring-container">
+                        <svg class="progress-ring" viewBox="0 0 120 120">
+                            <circle class="progress-ring-bg" cx="60" cy="60" r="52"/>
+                            <circle class="progress-ring-fill" cx="60" cy="60" r="52" id="visualsRing"/>
+                        </svg>
+                        <span class="progress-ring-text" id="visualsCount">0/30</span>
+                    </div>
+                    <h3>Visuals Created</h3>
+                    <p>Infographic cards designed</p>
+                </div>
+                <div class="progress-card" data-type="notebooks">
+                    <div class="progress-ring-container">
+                        <svg class="progress-ring" viewBox="0 0 120 120">
+                            <circle class="progress-ring-bg" cx="60" cy="60" r="52"/>
+                            <circle class="progress-ring-fill" cx="60" cy="60" r="52" id="notebooksRing"/>
+                        </svg>
+                        <span class="progress-ring-text" id="notebooksCount">0/10</span>
+                    </div>
+                    <h3>Notebooks</h3>
+                    <p>Applied analysis complete</p>
+                </div>
+                <div class="progress-card" data-type="casestudies">
+                    <div class="progress-ring-container">
+                        <svg class="progress-ring" viewBox="0 0 120 120">
+                            <circle class="progress-ring-bg" cx="60" cy="60" r="52"/>
+                            <circle class="progress-ring-fill" cx="60" cy="60" r="52" id="casestudiesRing"/>
+                        </svg>
+                        <span class="progress-ring-text" id="casestudiesCount">0/3</span>
+                    </div>
+                    <h3>Case Studies</h3>
+                    <p>Full pipeline analyses</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 8-Week Execution Timeline -->
+        <section class="timeline-section" id="timelineSection">
+            <div class="section-header">
+                <h2>8-Week Execution Plan</h2>
+            </div>
+            <div class="timeline" id="timeline"></div>
+        </section>
+
+        <!-- Day 31-60 Posting Checklist -->
+        <section class="checklist-section" id="checklistSection">
+            <div class="section-header">
+                <h2>Day 31–60 Posting Checklist</h2>
+                <div class="checklist-filter">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="pending">Pending</button>
+                    <button class="filter-btn" data-filter="done">Done</button>
+                </div>
+            </div>
+            <div class="checklist-grid" id="checklistGrid"></div>
+        </section>
+
+        <!-- Insight Quality Checker -->
+        <section class="insight-section" id="insightSection">
+            <div class="section-header">
+                <h2>Insight Quality Checker</h2>
+            </div>
+            <div class="insight-checker">
+                <div class="insight-input-area">
+                    <textarea id="insightInput" placeholder="Paste your insight here to check quality...&#10;&#10;Example: Students studying more than 3 hours scored around 18% higher on average, but the variation remained high."></textarea>
+                    <button class="check-btn" id="checkInsightBtn">
+                        <svg viewBox="0 0 20 20" fill="currentColor" width="18" height="18">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                        </svg>
+                        Check Quality
+                    </button>
+                </div>
+                <div class="insight-results" id="insightResults"></div>
+            </div>
+        </section>
+
+        <!-- Daily Filter Reminder -->
+        <section class="filter-reminder" id="filterReminder">
+            <div class="reminder-card">
+                <div class="reminder-icon">🎯</div>
+                <blockquote>
+                    Does this show that I can think with data?<br>
+                    <span class="reminder-sub">If not, improve it.</span>
+                </blockquote>
+                <p class="reminder-note">Recruiters don't care that you learned pandas. They care whether you can take messy data, find a pattern, explain the risk, and support a decision.</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>StatSphere (Sanman Kadam) · MSc Statistics · Data Analytics</p>
+        <p class="footer-sub">Stats That Make Data Speak — Because data alone does not speak.</p>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>

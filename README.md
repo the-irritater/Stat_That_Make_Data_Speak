@@ -28,7 +28,7 @@
 
 ### Part 1: Theory — Stats Foundations
 
-The concepts behind every data decision. Each module = 5 days of focused learning.
+The concepts behind every data decision. Each module = 5–10 days of focused learning.
 
 | Module | Topic | Days | Status |
 |--------|-------|------|--------|
@@ -38,6 +38,8 @@ The concepts behind every data decision. Each module = 5 days of focused learnin
 | 4 | [**Distributions**](modules/04-distributions/) — Normal, binomial, CLT | Day 16–20 | Complete |
 | 5 | [**Inference**](modules/05-inference/) — Confidence intervals, hypothesis testing | Day 21–25 | Complete |
 | 6 | [**Modeling**](modules/06-modeling/) — Regression, correlation, ANOVA | Day 26–30 | Complete |
+| 7 | [**Data Foundations**](modules/07-data-foundations/) — Datasets, data types, cleaning, EDA | Day 31–40 | Complete |
+| 8 | [**Applied Methods**](modules/08-applied-methods/) — Visualization, bias, assumptions, diagnostics | Day 41–60 | Complete |
 
 ### Part 2: Applied — Python + Real Data
 
