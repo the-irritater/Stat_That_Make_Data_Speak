@@ -1,5 +1,3 @@
-<![CDATA[<div align="center">
-
 # Stats That Make Data Speak
 
 **I turn statistical concepts into real-world data decisions using Python and analytics.**
@@ -14,8 +12,6 @@
 *A structured, hands-on statistics resource — from foundational concepts to applied data analysis with Python.*
 
 ---
-
-</div>
 
 ## What You'll Learn From This Repo
 
@@ -79,7 +75,7 @@ Complete analyses that show the full pipeline: question → data → analysis �
 ```bash
 # Clone the repo
 git clone https://github.com/the-irritater/Stat_That_Make_Data_Speak.git
-cd stats-that-make-data-speak
+cd Stat_That_Make_Data_Speak
 
 # Install dependencies
 pip install -r requirements.txt
@@ -121,4 +117,3 @@ I am building this resource as part of my journey into data analytics — learni
 ## License
 
 This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
-]]>
