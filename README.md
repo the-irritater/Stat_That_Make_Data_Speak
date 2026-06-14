@@ -75,7 +75,7 @@ Complete analyses that show the full pipeline: question → data → analysis �
 ```bash
 # Clone the repo
 git clone https://github.com/the-irritater/Stat_That_Make_Data_Speak.git
-cd Stat_That_Make_Data_Speak
+cd stats-that-make-data-speak
 
 # Install dependencies
 pip install -r requirements.txt
