@@ -2,17 +2,15 @@
 
 > *Building models that predict outcomes and explain relationships in data.*
 
- **Coming Soon**
-
-## 📅 Planned Topics
+## Topics
 
 | Day | Topic | Core Idea |
 |-----|-------|-----------|
-| 26 | Correlation | Two things move together — but does one cause the other? |
-| 27 | Simple Linear Regression | Predicting one variable from another |
-| 28 | Multiple Regression | Predicting with multiple variables — the real-world scenario |
-| 29 | ANOVA | Comparing more than two groups at once |
-| 30 | Model Evaluation | How do you know if your model is actually good? |
+| 26 | [**Simple Linear Regression**](day-26-simple-linear-regression.md) | Predicting one continuous outcome from a single predictor |
+| 27 | [**Multiple Linear Regression**](day-27-multiple-linear-regression.md) | Controlling for multiple predictors to explain outcome |
+| 28 | [**Correlation vs Causation**](day-28-correlation-vs-causation.md) | Rule out confounding variables to understand drivers |
+| 29 | [**Logistic Regression Basics**](day-29-logistic-regression.md) | Sigmoid mappings and odds ratios for binary outcomes |
+| 30 | [**Statistics Roadmap**](day-30-statistics-roadmap.md) | The unified roadmap overview to make data speak |
 
 ## Related Applied Notebooks
 

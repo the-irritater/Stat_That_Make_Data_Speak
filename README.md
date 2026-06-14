@@ -33,11 +33,11 @@ The concepts behind every data decision. Each module = 5 days of focused learnin
 | Module | Topic | Days | Status |
 |--------|-------|------|--------|
 | 1 | [**Basics**](modules/01-basics/) — What statistics is, types of data, how we collect it | Day 1–5 | Complete |
-| 2 | [**Descriptive Stats**](modules/02-descriptive-stats/) — Summarizing data, central tendency, spread | Day 6–10 | Coming Soon |
-| 3 | [**Probability**](modules/03-probability/) — Chance, conditional probability, Bayes | Day 11–15 | Coming Soon |
-| 4 | [**Distributions**](modules/04-distributions/) — Normal, binomial, CLT | Day 16–20 | Coming Soon |
-| 5 | [**Inference**](modules/05-inference/) — Confidence intervals, hypothesis testing | Day 21–25 | Coming Soon |
-| 6 | [**Modeling**](modules/06-modeling/) — Regression, correlation, ANOVA | Day 26–30 | Coming Soon |
+| 2 | [**Descriptive Stats**](modules/02-descriptive-stats/) — Summarizing data, central tendency, spread | Day 6–10 | Complete |
+| 3 | [**Probability**](modules/03-probability/) — Chance, conditional probability, Bayes | Day 11–15 | Complete |
+| 4 | [**Distributions**](modules/04-distributions/) — Normal, binomial, CLT | Day 16–20 | Complete |
+| 5 | [**Inference**](modules/05-inference/) — Confidence intervals, hypothesis testing | Day 21–25 | Complete |
+| 6 | [**Modeling**](modules/06-modeling/) — Regression, correlation, ANOVA | Day 26–30 | Complete |
 
 ### Part 2: Applied — Python + Real Data
 

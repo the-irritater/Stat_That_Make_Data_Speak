@@ -2,17 +2,15 @@
 
 > *Understanding chance — the foundation of every statistical inference.*
 
- **Coming Soon**
-
-## 📅 Planned Topics
+## Topics
 
 | Day | Topic | Core Idea |
 |-----|-------|-----------|
-| 11 | Introduction to Probability | What does "likely" actually mean in data? |
-| 12 | Conditional Probability | How does knowing one thing change the odds of another? |
-| 13 | Bayes' Theorem | Updating beliefs with new evidence |
-| 14 | Counting Principles | Permutations, combinations — how many ways can it happen? |
-| 15 | Random Variables | When outcomes become numbers |
+| 11 | [**Introduction to Probability**](day-11-intro-to-probability.md) | Understanding experiments, outcomes, and sample spaces |
+| 12 | [**Probability Rules**](day-12-probability-rules.md) | Addition and multiplication rules for multiple events |
+| 13 | [**Conditional Probability**](day-13-conditional-probability.md) | How knowing one thing changes the odds of another |
+| 14 | [**Bayes' Theorem**](day-14-bayes-theorem.md) | Updating beliefs with new evidence |
+| 15 | [**Permutations and Combinations**](day-15-permutations-combinations.md) | Counting potential outcomes in a sample space |
 
 ## Related Applied Notebooks
 

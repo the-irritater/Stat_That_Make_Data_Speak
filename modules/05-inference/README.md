@@ -2,22 +2,20 @@
 
 > *Going beyond your data — making conclusions about a population from a sample.*
 
- **Coming Soon**
-
-## 📅 Planned Topics
+## Topics
 
 | Day | Topic | Core Idea |
 |-----|-------|-----------|
-| 21 | Confidence Intervals | How sure are we about our estimate? |
-| 22 | Hypothesis Testing | Is this result real or just random noise? |
-| 23 | t-Tests | Comparing two groups — is the difference significant? |
-| 24 | Chi-Square Test | Are these categories actually related? |
-| 25 | p-Values & Significance | The most misunderstood number in statistics |
+| 21 | [**Confidence Intervals**](day-21-confidence-intervals.md) | How sure are we about our sample estimates? |
+| 22 | [**Introduction to Hypothesis Testing**](day-22-intro-to-hypothesis-testing.md) | Standard framework to test null vs alternative claims |
+| 23 | [**Z-test vs t-test**](day-23-z-test-vs-t-test.md) | Selecting tests for continuous parameters |
+| 24 | [**Type I and Type II Errors**](day-24-type-i-ii-errors.md) | False positives, false negatives, and statistical power |
+| 25 | [**A/B Testing and Chi-Square Test**](day-25-ab-testing-chi-square.md) | Evaluating lifts in categorical conversions |
 
 ## Related Applied Notebooks
 
-- [Is this campaign actually working?](../../applied/notebooks/07-is-campaign-working.ipynb)
 - [Do discounts increase repeat purchases?](../../applied/notebooks/05-do-discounts-work.ipynb)
+- [Is this campaign actually working?](../../applied/notebooks/07-is-campaign-working.ipynb)
 
 ---
 
