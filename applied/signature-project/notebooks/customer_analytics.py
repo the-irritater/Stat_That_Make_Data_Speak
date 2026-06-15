@@ -47,8 +47,11 @@ from sklearn.metrics import mean_squared_error, mean_absolute_error
 from statsmodels.graphics.gofplots import qqplot
 
 # Setup paths relative to signature project folder
-CASE_STUDY_DIR = Path(__file__).resolve().parent
-ROOT_DIR = Path(__file__).resolve().parents[3]
+try:
+    CASE_STUDY_DIR = Path(__file__).resolve().parent
+except NameError:
+    CASE_STUDY_DIR = Path().resolve()
+ROOT_DIR = CASE_STUDY_DIR.parents[2]
 RAW_DATA_PATH = ROOT_DIR / "data" / "raw" / "ecommerce.csv"
 FIGURES_DIR = CASE_STUDY_DIR.parent / "outputs" / "figures"
 FIGURES_DIR.mkdir(parents=True, exist_ok=True)

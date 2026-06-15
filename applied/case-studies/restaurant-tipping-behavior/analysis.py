@@ -41,7 +41,10 @@ from statsmodels.graphics.gofplots import qqplot
 from statsmodels.stats.outliers_influence import variance_inflation_factor
 from statsmodels.stats.diagnostic import het_breuschpagan
 
-CASE_STUDY_DIR = Path(__file__).resolve().parent
+try:
+    CASE_STUDY_DIR = Path(__file__).resolve().parent
+except NameError:
+    CASE_STUDY_DIR = Path().resolve()
 ROOT_DIR = CASE_STUDY_DIR.parents[2]
 DATA_PATH = ROOT_DIR / "data" / "raw" / "tips.csv"
 DIAGNOSTICS_PATH = CASE_STUDY_DIR / "residual_diagnostics.png"
