@@ -3,7 +3,7 @@
 # jupyter:
 #   title: "What Actually Drives Sales? Correlation Analysis"
 #   purpose: "Understand relationships between variables using correlation"
-#   dataset: "../datasets/tips.csv"
+#   dataset: "../../data/raw/tips.csv"
 # ---
 
 # %% [markdown]
@@ -35,7 +35,7 @@ plt.rcParams['figure.figsize'] = (10, 6)
 plt.rcParams['figure.dpi'] = 100
 
 # Load datasets
-tips = pd.read_csv('../datasets/tips.csv')
+tips = pd.read_csv('../../data/raw/tips.csv')
 tips['tip_pct'] = (tips['tip'] / tips['total_bill'] * 100).round(1)
 tips.head()
 

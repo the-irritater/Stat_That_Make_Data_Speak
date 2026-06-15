@@ -3,7 +3,7 @@
 # jupyter:
 #   title: "Do Discounts Increase Repeat Purchases?"
 #   purpose: "A/B Testing using Chi-Square Test of Independence"
-#   dataset: "../datasets/ecommerce.csv"
+#   dataset: "../../data/raw/ecommerce.csv"
 # ---
 
 # %% [markdown]
@@ -34,7 +34,7 @@ plt.rcParams['figure.figsize'] = (10, 6)
 plt.rcParams['figure.dpi'] = 100
 
 # Load e-commerce dataset
-df = pd.read_csv('../datasets/ecommerce.csv')
+df = pd.read_csv('../../data/raw/ecommerce.csv')
 print(f"Total customers: {len(df)}")
 df.head()
 

@@ -3,7 +3,7 @@
 # jupyter:
 #   title: "Case Study: Screen Time vs Productivity"
 #   purpose: "Analyze correlation between daily screen time and employee productivity"
-#   dataset: "../../datasets/screen_time.csv"
+#   dataset: "../../../data/raw/screen_time.csv"
 # ---
 
 # %% [markdown]
@@ -36,7 +36,7 @@ plt.rcParams['figure.figsize'] = (10, 6)
 plt.rcParams['figure.dpi'] = 100
 
 # Load screen time dataset
-df = pd.read_csv('../../datasets/screen_time.csv')
+df = pd.read_csv('../../../data/raw/screen_time.csv')
 print(f"Loaded records for {len(df)} employees.")
 df.head()
 

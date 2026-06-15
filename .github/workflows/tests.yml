@@ -1,0 +1,49 @@
+name: Python Testing & Code Quality
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.11"
+        cache: 'pip'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install poetry black flake8 isort pytest pytest-cov streamlit plotly
+        poetry config virtualenvs.create false
+        poetry install --no-root --no-interaction
+
+    - name: Lint with flake8
+      run: |
+        # Stop build on syntax errors/undefined names
+        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        # Exit-zero treats all lint errors as warnings
+        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=120 --statistics
+
+    - name: Check formatting with black
+      run: black --check src/ tests/ dashboard/
+
+    - name: Check import order with isort
+      run: isort --check-only src/ tests/ dashboard/
+
+    - name: Run pytest with coverage
+      run: pytest --cov=src --cov-report=xml tests/
+
+    - name: Upload coverage reports to Codecov
+      uses: codecov/codecov-action@v4
+      with:
+        file: ./coverage.xml
+        fail_ci_if_error: false
+        token: ${{ secrets.CODECOV_TOKEN }}

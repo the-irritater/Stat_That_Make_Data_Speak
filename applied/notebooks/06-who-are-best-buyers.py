@@ -3,7 +3,7 @@
 # jupyter:
 #   title: "Who Are Our Best Buyers?"
 #   purpose: "Segment customers by behavior using RFM analysis"
-#   dataset: "../datasets/ecommerce.csv"
+#   dataset: "../../data/raw/ecommerce.csv"
 # ---
 
 # %% [markdown]
@@ -35,7 +35,7 @@ plt.rcParams['figure.figsize'] = (10, 6)
 plt.rcParams['figure.dpi'] = 100
 
 # Load e-commerce dataset
-df = pd.read_csv('../datasets/ecommerce.csv')
+df = pd.read_csv('../../data/raw/ecommerce.csv')
 df.head()
 
 # %% [markdown]

@@ -3,7 +3,7 @@
 # jupyter:
 #   title: "Case Study: Do Discounts Drive Retention?"
 #   purpose: "Analyze relationship between discount depth and customer retention"
-#   dataset: "../../datasets/customer_discounts.csv"
+#   dataset: "../../../data/raw/customer_discounts.csv"
 # ---
 
 # %% [markdown]
@@ -36,7 +36,7 @@ plt.rcParams['figure.figsize'] = (10, 6)
 plt.rcParams['figure.dpi'] = 100
 
 # Load discount retention dataset
-df = pd.read_csv('../../datasets/customer_discounts.csv')
+df = pd.read_csv('../../../data/raw/customer_discounts.csv')
 print(f"Loaded records for {len(df)} customers.")
 df.head()
 

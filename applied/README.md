@@ -24,7 +24,7 @@ These 7 notebooks follow a **progression** — each builds on the previous:
 
 ## Datasets
 
-All datasets are publicly available and included in the [`datasets/`](datasets/) directory. See the [dataset documentation](datasets/README.md) for sources and descriptions.
+All datasets are publicly available and included in the [`data/raw/`](data/raw/) directory. See the [dataset documentation](data/raw/README.md) for sources and descriptions.
 
 ## Case Studies
 

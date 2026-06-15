@@ -3,7 +3,7 @@
 # jupyter:
 #   title: "Is This Campaign Actually Working?"
 #   purpose: "Hypothesis testing for conversions and purchase values"
-#   dataset: "../datasets/marketing_campaign.csv"
+#   dataset: "../../data/raw/marketing_campaign.csv"
 # ---
 
 # %% [markdown]
@@ -38,7 +38,7 @@ plt.rcParams['figure.figsize'] = (10, 6)
 plt.rcParams['figure.dpi'] = 100
 
 # Load marketing campaign data
-df = pd.read_csv('../datasets/marketing_campaign.csv')
+df = pd.read_csv('../../data/raw/marketing_campaign.csv')
 print(f"Total Users: {len(df)}")
 df.groupby('Campaign_Group').size()
 

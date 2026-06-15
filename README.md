@@ -2,12 +2,39 @@
 
 **I turn statistical concepts into real-world data decisions using Python and analytics.**
 
+<!-- StatSphere Identity Shield -->
+<p align="center">
+  <a href="https://github.com/the-irritater/Stat_That_Make_Data_Speak">
+    <img src="https://img.shields.io/badge/🔮_StatSphere-Making_Data_Make_Sense-1A365D?style=for-the-badge&labelColor=0D1B2A&color=2B6CB0" alt="StatSphere" />
+  </a>
+  <a href="https://www.linkedin.com/in/sanman-kadam-7a4990374/">
+    <img src="https://img.shields.io/badge/by-Sanman_Kadam-E53E3E?style=for-the-badge&labelColor=1A365D" alt="Author" />
+  </a>
+  <a href="modules/">
+    <img src="https://img.shields.io/badge/MSc-Statistics-00C9A7?style=for-the-badge&labelColor=1A365D" alt="MSc Statistics" />
+  </a>
+</p>
+
+<!-- Series Stats Shields -->
+<p align="center">
+  <img src="https://img.shields.io/badge/📅_60-Days_of_Learning-2B6CB0?style=flat-square&labelColor=1A365D" alt="60 Days" />
+  <img src="https://img.shields.io/badge/📦_8-Modules-E53E3E?style=flat-square&labelColor=1A365D" alt="8 Modules" />
+  <img src="https://img.shields.io/badge/📓_7-Applied_Notebooks-F6AD55?style=flat-square&labelColor=1A365D" alt="7 Notebooks" />
+  <img src="https://img.shields.io/badge/🔬_2-Case_Studies-00C9A7?style=flat-square&labelColor=1A365D" alt="2 Case Studies" />
+  <img src="https://img.shields.io/badge/⭐_1-Signature_Project-9F7AEA?style=flat-square&labelColor=1A365D" alt="Signature Project" />
+</p>
+
+<!-- Tech Stack Shields -->
 [![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
 [![Jupyter](https://img.shields.io/badge/Jupyter-Notebook-F37626?style=for-the-badge&logo=jupyter&logoColor=white)](https://jupyter.org)
 [![pandas](https://img.shields.io/badge/pandas-Data_Analysis-150458?style=for-the-badge&logo=pandas&logoColor=white)](https://pandas.pydata.org)
 [![seaborn](https://img.shields.io/badge/seaborn-Visualization-4C72B0?style=for-the-badge)](https://seaborn.pydata.org)
 [![scipy](https://img.shields.io/badge/scipy-Statistics-8CAAE6?style=for-the-badge&logo=scipy&logoColor=white)](https://scipy.org)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
+[![Python Testing & Code Quality](https://github.com/the-irritater/Stat_That_Make_Data_Speak/actions/workflows/tests.yml/badge.svg)](https://github.com/the-irritater/Stat_That_Make_Data_Speak/actions/workflows/tests.yml)
+[![Coverage](https://img.shields.io/badge/Coverage-91%25-brightgreen)](tests/)
+
+
 
 *A structured, hands-on statistics resource — from foundational concepts to applied data analysis with Python.*
 
@@ -72,19 +99,81 @@ Complete analyses that show the full pipeline: question → data → analysis �
 
 ---
 
-## Quick Start
+## Project Purpose
 
+**Stats That Make Data Speak** is a comprehensive, hands-on framework designed to bridge the gap between academic statistical theory and practical business decisions. Data alone is silent; statistics provides the structured language to translate data shape, variation, and trends into clear business recommendations. This portfolio is engineered to demonstrate complete analytics pipelines:
+*   **Data Validation:** Guaranteeing schema validity, type checks, and ethical standards.
+*   **Exploratory Data Analysis (EDA):** Separating typical trends from outliers using robust statistics (e.g., medians over skewed averages).
+*   **Inference & Regression Modeling:** Quantifying drivers and testing business promotions under rigorous significance thresholds.
+*   **Interactive Controls:** Enabling stakeholders to explore and slice datasets dynamically.
+
+---
+
+## Quick Start & Usage Guide
+
+### 1. Environment & Dependency Setup
+This project supports automated environment management using [Poetry](https://python-poetry.org/) or [Make](https://www.gnu.org/software/make/).
+
+Using setup helper script:
 ```bash
-# Clone the repo
+# Clone the repository
 git clone https://github.com/the-irritater/Stat_That_Make_Data_Speak.git
-cd stats-that-make-data-speak
+cd Stat_That_Make_Data_Speak
 
-# Install dependencies
-pip install -r requirements.txt
-
-# Launch notebooks
-jupyter notebook applied/notebooks/
+# Create a virtual environment and install packages automatically
+./setup.sh --install-deps
 ```
+
+Or execute via `make` directly:
+```bash
+# Clean up setup and install pinned dependencies
+make setup
+```
+
+*Note: If you do not wish to use Poetry or Make, you can install packages manually using the convenience requirements fallback file:*
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt -r requirements-dev.txt
+```
+
+### 2. Run Interactive Dashboard
+Explore statistical analyses, regressions, A/B tests, and tipping thresholds via a premium Streamlit dashboard:
+```bash
+make run-dashboard
+```
+
+### 3. Launch Notebooks
+```bash
+source .venv/bin/activate
+jupyter notebook
+```
+
+---
+
+## Reproducibility Checklist
+
+To guarantee the reliability and exact replication of all figures, metrics, and models:
+1.  **Environment Alignment:** Always run `git pull` followed by `make setup` to align local packages with pinned dependencies.
+2.  **Dataset Integrity:** Ensure raw data remains untouched in `data/raw/`. Re-run data loader tests (`make test`) to check file hashes and schemas.
+3.  **Timestamp Snapshots:** For any external or time-sensitive data analysis, capture and log timestamp snapshots in your local workspace to anchor regression fits against real-world drift.
+4.  **Local Pipeline Testing:** Execute the entire test suite and verify coverage using:
+    ```bash
+    make test
+    ```
+5.  **Format Verification:** Format code with `make format` to ensure style rules are met before commits.
+
+---
+
+## Contributing Guide
+
+We welcome peer review, validation, and extensions to the analysis pipelines.
+
+### PR Requirements
+1.  **Code Quality & Format:** Run `make lint` locally. All Python code must be formatted using `black` (120 char length) and sorted using `isort`.
+2.  **Unit & Integration Tests:** Any new analytical routines or loading helpers must be accompanied by pytest unit tests in the `tests/` directory. Tests should use tolerance-based assertions.
+3.  **Replication Check:** Execute the peer validation template notebook [collaborative_peer_validation.ipynb](applied/notebooks/collaborative_peer_validation.ipynb) to verify existing models are not broken.
+4.  **No Unnecessary Files:** Do not commit temporary logs, workspace configs (`.vscode/`), cached metrics, or internal planning documents. Make sure files like LinkedIn drafts or internal calendars are filtered out by `.gitignore`.
 
 ---
 
@@ -92,7 +181,7 @@ jupyter notebook applied/notebooks/
 
 | Tool | Purpose |
 |------|---------|
-| **Python 3.10+** | Core language |
+| **Python 3.11** | Core language |
 | **pandas** | Data manipulation |
 | **NumPy** | Numerical computation |
 | **matplotlib** | Base visualizations |
@@ -119,3 +208,4 @@ I am building this resource as part of my journey into data analytics — learni
 ## License
 
 This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
+

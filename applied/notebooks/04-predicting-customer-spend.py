@@ -3,7 +3,7 @@
 # jupyter:
 #   title: "Predicting Customer Spend"
 #   purpose: "Build prediction models using linear regression"
-#   dataset: "../datasets/ecommerce.csv"
+#   dataset: "../../data/raw/ecommerce.csv"
 # ---
 
 # %% [markdown]
@@ -37,7 +37,7 @@ plt.rcParams['figure.figsize'] = (10, 6)
 plt.rcParams['figure.dpi'] = 100
 
 # Load e-commerce dataset
-df = pd.read_csv('../datasets/ecommerce.csv')
+df = pd.read_csv('../../data/raw/ecommerce.csv')
 print(f"Loaded {len(df)} customer records.")
 df.head()
 

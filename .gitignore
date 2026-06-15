@@ -28,8 +28,20 @@ env/
 .DS_Store
 Thumbs.db
 
-# Data (large files)
-*.zip
-*.tar.gz
-# Keep small CSVs in datasets/
-# !applied/datasets/*.csv
+# Data & Reproducibility
+data/processed/*
+!data/processed/.gitkeep
+
+# Pytest & Coverage
+.pytest_cache/
+.coverage
+htmlcov/
+.black-cache
+.isort_cache
+
+# Internal Strategy, Marketing, and LinkedIn Calendar files (ignored on GitHub)
+content-system/
+BRANDING.md
+HOW_TO_USE_AND_POST.md
+MONETIZATION.md
+

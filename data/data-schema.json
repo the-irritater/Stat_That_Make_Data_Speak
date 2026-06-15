@@ -1,0 +1,172 @@
+{
+  "tips": {
+    "columns": {
+      "total_bill": {
+        "type": "float",
+        "unit": "USD",
+        "description": "Total price of the meal including tax"
+      },
+      "tip": {
+        "type": "float",
+        "unit": "USD",
+        "description": "Tip amount left for the server"
+      },
+      "sex": {
+        "type": "category",
+        "options": ["Male", "Female"],
+        "description": "Gender of the payer"
+      },
+      "smoker": {
+        "type": "category",
+        "options": ["Yes", "No"],
+        "description": "Whether the party had smokers"
+      },
+      "day": {
+        "type": "category",
+        "options": ["Thur", "Fri", "Sat", "Sun"],
+        "description": "Day of the week"
+      },
+      "time": {
+        "type": "category",
+        "options": ["Lunch", "Dinner"],
+        "description": "Meal time of day"
+      },
+      "size": {
+        "type": "integer",
+        "unit": "count",
+        "description": "Party size"
+      }
+    }
+  },
+  "ecommerce": {
+    "columns": {
+      "Customer_ID": {
+        "type": "integer",
+        "primary_key": true,
+        "description": "Unique e-commerce customer identifier"
+      },
+      "Session_Duration": {
+        "type": "float",
+        "unit": "minutes",
+        "description": "Total website session duration in minutes"
+      },
+      "Pages_Visited": {
+        "type": "integer",
+        "unit": "count",
+        "description": "Number of pages clicked during session"
+      },
+      "Discount_Applied": {
+        "type": "category",
+        "options": ["Yes", "No"],
+        "description": "Whether a promotional discount was applied"
+      },
+      "Total_Spend": {
+        "type": "float",
+        "unit": "USD",
+        "description": "Transaction total spend value"
+      },
+      "Repeat_Purchase": {
+        "type": "integer",
+        "options": [0, 1],
+        "description": "Binary indicator for customer returning to buy again"
+      },
+      "Recency": {
+        "type": "integer",
+        "unit": "days",
+        "description": "Number of days since last purchase"
+      },
+      "Frequency": {
+        "type": "integer",
+        "unit": "count",
+        "description": "Number of purchases made in last year"
+      },
+      "Monetary": {
+        "type": "float",
+        "unit": "USD",
+        "description": "Total customer lifetime monetary spend value"
+      }
+    }
+  },
+  "marketing_campaign": {
+    "columns": {
+      "User_ID": {
+        "type": "integer",
+        "primary_key": true,
+        "description": "Unique identifier for the campaign participant"
+      },
+      "Campaign_Group": {
+        "type": "category",
+        "options": ["Control", "Test"],
+        "description": "A/B test group allocation (Control vs Test)"
+      },
+      "Converted": {
+        "type": "integer",
+        "options": [0, 1],
+        "description": "Binary conversion indicator (1 = Purchased, 0 = Did not purchase)"
+      },
+      "Purchase_Amount": {
+        "type": "float",
+        "unit": "USD",
+        "description": "Spend value associated with the conversion (0.0 if not converted)"
+      }
+    }
+  },
+  "screen_time": {
+    "columns": {
+      "User_ID": {
+        "type": "integer",
+        "primary_key": true,
+        "description": "Unique user participant identifier"
+      },
+      "Screen_Time_Hours": {
+        "type": "float",
+        "unit": "hours",
+        "description": "Daily screen exposure in hours"
+      },
+      "Productivity_Score": {
+        "type": "float",
+        "unit": "index",
+        "description": "Productivity rating score from 0.0 to 100.0"
+      },
+      "Age_Group": {
+        "type": "category",
+        "options": ["18-24", "25-34", "35-44", "45+"],
+        "description": "Demographic age range classification"
+      },
+      "Profession": {
+        "type": "category",
+        "options": ["Manager", "Student", "Designer", "Data Analyst", "Software Engineer"],
+        "description": "Primary workspace role classification"
+      }
+    }
+  },
+  "customer_discounts": {
+    "columns": {
+      "Customer_ID": {
+        "type": "integer",
+        "primary_key": true,
+        "description": "Unique loyalty customer identifier"
+      },
+      "Discount_Rate": {
+        "type": "float",
+        "unit": "ratio",
+        "description": "Discount percentage rate depth (e.g. 0.1 for 10% off)"
+      },
+      "Retained": {
+        "type": "integer",
+        "options": [0, 1],
+        "description": "Binary retention status indicator (1 = Retained, 0 = Churned)"
+      },
+      "Tenure_Months": {
+        "type": "integer",
+        "unit": "months",
+        "description": "Length of customer contract/subscription in months"
+      },
+      "Total_Spend": {
+        "type": "float",
+        "unit": "USD",
+        "description": "Total spend by customer in dollars"
+      }
+    }
+  }
+}
