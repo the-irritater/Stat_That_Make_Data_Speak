@@ -52,8 +52,9 @@ try:
 except NameError:
     CASE_STUDY_DIR = Path().resolve()
 ROOT_DIR = CASE_STUDY_DIR.parents[2]
+SIG_PROJECT_DIR = CASE_STUDY_DIR.parent
 RAW_DATA_PATH = ROOT_DIR / "data" / "raw" / "ecommerce.csv"
-FIGURES_DIR = CASE_STUDY_DIR.parent / "outputs" / "figures"
+FIGURES_DIR = SIG_PROJECT_DIR / "outputs" / "figures"
 FIGURES_DIR.mkdir(parents=True, exist_ok=True)
 
 # Set clean style
