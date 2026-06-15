@@ -12,11 +12,12 @@ setup:
 	$(BIN)/pip install poetry
 	$(BIN)/poetry install
 	@echo "Installing dev/dashboard dependencies..."
-	$(BIN)/pip install -r requirements-dev.txt
+	$(BIN)/pip install -r requirements-dev.txt -r requirements-dashboard.txt
 	@echo "Setup complete. Source the environment with: source .venv/bin/activate"
 
+
 test:
-	$(BIN)/pytest --cov=src --cov-report=term-missing tests/
+	$(BIN)/pytest --cov=stats_series --cov-report=term-missing tests/
 
 lint:
 	$(BIN)/flake8 src/ tests/ dashboard/
@@ -31,7 +32,7 @@ run-dashboard:
 	$(BIN)/streamlit run dashboard/interactive_dashboard.py
 
 generate-data:
-	$(BIN)/python -m src.precompute_aggregations
+	$(BIN)/python -m stats_series.precompute_aggregations
 
 
 clean:

@@ -134,12 +134,12 @@ plt.show()
 # %% [markdown]
 # ### Diagnostics Analysis:
 # - **Homoscedasticity:** Residuals are spread fairly evenly above and below the zero line, though we see a slight expansion at higher values due to our discount multiplier. Overall, it's very clean!
-# - **Normality:** The points in the Q-Q plot closely track the red 45-degree line, confirming our residuals are normally distributed. Our linear regression results are highly reliable.
+# - **Normality:** The points in the Q-Q plot closely track the red 45-degree line. The residual plots do not show severe violations, so the model is acceptable for an educational analysis.
 
 # %% [markdown]
 # ## Key Finding
 # 
-# > ** Website engagement metrics are strong leading indicators of revenue. Together, Session Duration and Pages Visited predict 47% of customer spend. Controlling for duration, every extra page a customer visits predicts an additional $2.87 in spend, while each extra minute of browsing predicts an additional $1.34. Optimizing the site UI to keep users engaged and clicking directly drives sales growth.**
+# > ** Website engagement metrics are strong leading indicators of revenue. Together, Session Duration and Pages Visited predict 47% of customer spend. Controlling for duration, every extra page a customer visits predicts an additional $2.87 in spend, while each extra minute of browsing predicts an additional $1.34. Optimizing the site UI to keep users engaged and clicking is associated with higher spend and may support UX experiments.**
 # 
 # Quantifying this with regression gives the marketing and product teams a dollar-backed business case.
 

@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from src.analysis_pipeline import calculate_correlation, fit_ols_regression, run_chi_square_test
+from stats_series.analysis_pipeline import calculate_correlation, fit_ols_regression, run_chi_square_test
 
 
 def test_fit_ols_regression():

@@ -4,7 +4,8 @@ version = "1.0.0"
 description = "A structured statistics portfolio and analysis library in Python."
 authors = ["Sanman Kadam (StatSphere)"]
 readme = "README.md"
-packages = [{include = "src"}]
+packages = [{include = "stats_series", from = "src"}]
+
 
 [tool.poetry.dependencies]
 python = "^3.10"

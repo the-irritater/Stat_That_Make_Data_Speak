@@ -3,7 +3,7 @@ from pathlib import Path
 import pandas as pd
 import pytest
 
-from src.data_loader import DataLoader
+from stats_series.data_loader import DataLoader
 
 
 def test_data_loader_init():

@@ -2,15 +2,15 @@ from pathlib import Path
 
 import pandas as pd
 
-from src.analysis_pipeline import fit_ols_regression, run_chi_square_test
-from src.data_loader import DataLoader
+from stats_series.analysis_pipeline import fit_ols_regression, run_chi_square_test
+from stats_series.data_loader import DataLoader
 
 
 def main():
     print("Starting precomputation of analytical aggregates...")
 
     loader = DataLoader()
-    processed_dir = Path(__file__).resolve().parents[1] / "data" / "processed"
+    processed_dir = Path(__file__).resolve().parents[2] / "data" / "processed"
     processed_dir.mkdir(parents=True, exist_ok=True)
 
     # 1. Restaurant Tips EDA summaries

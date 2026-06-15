@@ -2,6 +2,10 @@
 
 **I turn statistical concepts into real-world data decisions using Python and analytics.**
 
+> [!NOTE]
+> **Educational & Portfolio Disclaimer:** Some datasets in this repository are synthetic and are used for educational and statistical demonstration. Findings should be interpreted as portfolio examples, not real business evidence.
+
+
 <!-- StatSphere Identity Shield -->
 <p align="center">
   <a href="https://github.com/the-irritater/Stat_That_Make_Data_Speak">
@@ -20,7 +24,7 @@
   <img src="https://img.shields.io/badge/📅_60-Days_of_Learning-2B6CB0?style=flat-square&labelColor=1A365D" alt="60 Days" />
   <img src="https://img.shields.io/badge/📦_8-Modules-E53E3E?style=flat-square&labelColor=1A365D" alt="8 Modules" />
   <img src="https://img.shields.io/badge/📓_7-Applied_Notebooks-F6AD55?style=flat-square&labelColor=1A365D" alt="7 Notebooks" />
-  <img src="https://img.shields.io/badge/🔬_2-Case_Studies-00C9A7?style=flat-square&labelColor=1A365D" alt="2 Case Studies" />
+  <img src="https://img.shields.io/badge/🔬_3-Case_Studies-00C9A7?style=flat-square&labelColor=1A365D" alt="3 Case Studies" />
   <img src="https://img.shields.io/badge/⭐_1-Signature_Project-9F7AEA?style=flat-square&labelColor=1A365D" alt="Signature Project" />
 </p>
 
@@ -32,7 +36,7 @@
 [![scipy](https://img.shields.io/badge/scipy-Statistics-8CAAE6?style=for-the-badge&logo=scipy&logoColor=white)](https://scipy.org)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![Python Testing & Code Quality](https://github.com/the-irritater/Stat_That_Make_Data_Speak/actions/workflows/tests.yml/badge.svg)](https://github.com/the-irritater/Stat_That_Make_Data_Speak/actions/workflows/tests.yml)
-[![Coverage](https://img.shields.io/badge/Coverage-91%25-brightgreen)](tests/)
+[![Coverage Status](https://img.shields.io/badge/Coverage-Verified-brightgreen)](tests/)
 
 
 
@@ -90,6 +94,7 @@ Complete analyses that show the full pipeline: question → data → analysis �
 |------------|-------------|
 | [Screen Time vs Productivity](applied/case-studies/screen-time-vs-productivity/) | Higher screen time (>6 hrs) shows negative correlation with productivity scores |
 | [Do Discounts Drive Retention?](applied/case-studies/discount-vs-retention/) | Discount depth doesn't predict customer return rate |
+| [Restaurant Tipping Behavior (Real-World)](applied/case-studies/restaurant-tipping-behavior/) | Bill size and party size explain 46.8% of variance in tips; tipping percentage is similar between lunch and dinner (p = 0.51) |
 
 ### Signature Project
 
@@ -147,6 +152,19 @@ make run-dashboard
 ```bash
 source .venv/bin/activate
 jupyter notebook
+```
+
+---
+
+## How to Reproduce
+
+You can reproduce all results and start the interactive components with these exact commands:
+
+```bash
+make setup            # Setup virtual environment and install all dependencies
+make test             # Run unit tests and generate coverage report
+make generate-data    # Precompute analytical aggregates from raw datasets
+make run-dashboard    # Launch the interactive Streamlit dashboard
 ```
 
 ---

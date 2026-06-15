@@ -6,7 +6,7 @@ import pandas as pd
 
 class DataLoader:
     def __init__(self, schema_path=None):
-        self.root_dir = Path(__file__).resolve().parents[1]
+        self.root_dir = Path(__file__).resolve().parents[2]
 
         if schema_path is None:
             schema_path = self.root_dir / "data" / "data-schema.json"

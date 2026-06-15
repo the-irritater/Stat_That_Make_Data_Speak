@@ -80,7 +80,9 @@ st.sidebar.write("---")
 st.sidebar.info(
     "**StatSphere Portfolio**\n\n"
     "This dashboard lets you interactively test hypothesis models and visualize real-world business scenarios. "
-    "All computations are cached for speed and recorded for reproducibility."
+    "All computations are cached for speed and recorded for reproducibility.\n\n"
+    "**Disclaimer:** Datasets used in this repository are synthetic/educational and are intended for demonstration. "
+    "Findings should be interpreted as portfolio examples, not real business evidence."
 )
 
 # ----------------- Study 1: E-commerce Spend -----------------
@@ -340,7 +342,8 @@ elif analysis_option == "Screen Time vs Productivity (Correlation & Binning)":
         st.success(
             "**Takeaway:** There is a sharp nonlinear drop-off (tipping point) in "
             "productivity after **6 hours** of daily screen time "
-            "(averages fall ~30%). We recommend offline focus blocks and screen-free buffers."
+            "(averages fall ~30%). We recommend offline focus blocks and screen-free buffers. "
+            "\n\n*Note: This is an educational synthetic example, not workplace policy evidence.*"
         )
 
 # ----------------- Study 4: Discount Depth vs Retention -----------------

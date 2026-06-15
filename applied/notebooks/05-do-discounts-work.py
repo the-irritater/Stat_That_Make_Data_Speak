@@ -95,7 +95,7 @@ print(pd.DataFrame(expected, index=contingency_table.index, columns=contingency_
 # - **Null Hypothesis ($H_0$):** Repeat purchase behavior is independent of whether a discount was applied.
 # - **Alternative Hypothesis ($H_1$):** Repeat purchase behavior is associated with (dependent on) whether a discount was applied.
 # - **p-value ($p = 0.0177$):** Since $p < 0.05$, we reject the null hypothesis. The difference is statistically significant!
-# - We can say with 95% confidence that discounts do increase the likelihood of repeat purchases.
+# - We can say with 95% confidence that discount exposure is associated with a higher repeat-purchase rate in this dataset.
 
 # %% [markdown]
 # ## Step 4: Visualizing the A/B Test Results
