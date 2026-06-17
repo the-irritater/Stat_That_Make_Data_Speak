@@ -151,3 +151,71 @@ def test_dashboard_data_loading_utility(tmp_path, monkeypatch):
     df_valid = load_cached_data("valid_dataset")
     assert not df_valid.empty
     assert list(df_valid.columns) == ["col1", "col2"]
+
+
+def test_dataloader_validation_edge_cases(tmp_path):
+    import json
+
+    # 1. Non-existent schema file -> FileNotFoundError
+    with pytest.raises(FileNotFoundError, match="Schema file not found"):
+        DataLoader(schema_path=tmp_path / "non_existent_schema.json")
+
+    # Write a custom valid schema to a temporary file
+    custom_schema = {
+        "custom_dataset": {
+            "columns": {
+                "id": {"type": "integer", "primary_key": True, "nullable": False},
+                "val_int": {"type": "integer", "options": [0, 1]},
+                "val_float": {"type": "float", "nullable": False},
+            }
+        }
+    }
+
+    schema_file = tmp_path / "schema.json"
+    with open(schema_file, "w") as f:
+        json.dump(custom_schema, f)
+
+    # Initialize loader with custom schema
+    # Override get_raw_data_path to return a path in tmp_path
+    class TestLoader(DataLoader):
+        def get_raw_data_path(self, dataset_name):
+            return tmp_path / f"{dataset_name}.csv"
+
+    loader = TestLoader(schema_path=schema_file)
+
+    # 2. Dataset not defined in schema -> ValueError
+    with pytest.raises(ValueError, match="not defined in the schema"):
+        loader.load_dataset("unregistered_dataset")
+
+    # 3. Dataset file not found -> FileNotFoundError
+    with pytest.raises(FileNotFoundError, match="Dataset file not found"):
+        loader.load_dataset("custom_dataset")
+
+    # Create base valid dataframe
+    valid_df = pd.DataFrame({"id": [1, 2], "val_int": [0, 1], "val_float": [1.5, 2.5]})
+    csv_path = tmp_path / "custom_dataset.csv"
+    valid_df.to_csv(csv_path, index=False)
+
+    # Verify valid load
+    df_loaded = loader.load_dataset("custom_dataset")
+    assert not df_loaded.empty
+
+    # 4. Nullability check: id is non-nullable but has NaN
+    invalid_null_df = pd.DataFrame({"id": [1, None], "val_int": [0, 1], "val_float": [1.5, 2.5]})
+    with pytest.raises(ValueError, match="contains 1 null values but is marked non-nullable"):
+        loader.validate_dataframe(invalid_null_df, "custom_dataset")
+
+    # 5. Exact integer check: non-integer numeric values
+    invalid_int_df = pd.DataFrame({"id": [1.5, 2.0], "val_int": [0, 1], "val_float": [1.5, 2.5]})  # 1.5 is float
+    with pytest.raises(TypeError, match="expected integer values, got non-integer numeric values"):
+        loader.validate_dataframe(invalid_int_df, "custom_dataset")
+
+    # 6. Integer check: non-numeric type (e.g. object/string)
+    invalid_type_df = pd.DataFrame({"id": ["one", "two"], "val_int": [0, 1], "val_float": [1.5, 2.5]})
+    with pytest.raises(TypeError, match="expected integer, got"):
+        loader.validate_dataframe(invalid_type_df, "custom_dataset")
+
+    # 7. Allowed values options check: options is not category, val_int has value 2 (not in [0, 1])
+    invalid_opt_df = pd.DataFrame({"id": [1, 2], "val_int": [0, 2], "val_float": [1.5, 2.5]})
+    with pytest.raises(ValueError, match="has values outside allowed set"):
+        loader.validate_dataframe(invalid_opt_df, "custom_dataset")

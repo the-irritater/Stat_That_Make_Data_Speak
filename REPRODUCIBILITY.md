@@ -1,12 +1,12 @@
 # Reproducibility Guide
 
-To ensure absolute replication of all results, figures, statistics, and interactive dashboards, follow this guide to align your local environment.
+To ensure reproducible replication of all results, figures, statistics, and interactive dashboards, follow this guide to align your local environment.
 
 ---
 
 ## 1. System Requirements & Environment Setup
 
-This project is developed with **Python 3.10+** (tested up to Python 3.13) and managed using **Poetry** or standard **virtual environments**.
+This project is developed with **Python 3.10+** (CI currently validates Python 3.11) and managed using **Poetry** or standard **virtual environments**.
 
 ### Automated Environment Setup
 The easiest way to initialize a clean environment is using the `Makefile`:
@@ -60,13 +60,14 @@ make run-dashboard
 
 ## 3. Data Integrity & Schema Validation
 
-All raw datasets reside in the [data/raw/](file:///Users/the_irritater/Documents/Stats%20Series/data/raw/) directory as immutable CSV files.
+All raw datasets reside in the [data/raw/](data/raw/) directory as immutable CSV files.
 
 ### Schema Enforcement
-Before any analytical step or notebook execution, datasets are validated against a machine-readable JSON schema located at [data/data-schema.json](file:///Users/the_irritater/Documents/Stats%20Series/data/data-schema.json). This checks:
+Before any analytical step or notebook execution, datasets are validated against a machine-readable JSON schema located at [data/data-schema.json](data/data-schema.json). This checks:
 - Column presence and type compliance (integers, floats, categories).
 - Categorical options constraints (e.g., verifying `Discount_Applied` is strictly `Yes` or `No`).
-- Data quality rules (e.g., duplicate customer identifiers, range limits).
+- Binary integer allowed-value constraints (e.g., `Repeat_Purchase` must be 0 or 1).
+- Primary key uniqueness (no duplicate customer identifiers).
 
 ### Cryptographic Hashes
 Each raw dataset has its SHA-256 hash verified during testing to confirm the source data remains unmodified:

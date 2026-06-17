@@ -3,19 +3,24 @@ from scipy import stats
 from statsmodels.formula.api import ols
 
 
-def fit_ols_regression(df, formula):
+def fit_ols_regression(df, formula, cov_type=None):
     """Fits an Ordinary Least Squares (OLS) linear regression model.
 
     Args:
         df (pd.DataFrame): Input DataFrame
         formula (str): Patsy formula string (e.g. 'Total_Spend ~ Session_Duration')
+        cov_type (str, optional): Covariance estimator type. Use 'HC3' for
+            heteroscedasticity-robust standard errors. Defaults to None (classical OLS).
 
     Returns:
         statsmodels.regression.linear_model.RegressionResultsWrapper: Fit model object
     """
     if not isinstance(df, pd.DataFrame):
         raise TypeError("Input must be a pandas DataFrame")
-    model = ols(formula, data=df).fit()
+    if cov_type is not None:
+        model = ols(formula, data=df).fit(cov_type=cov_type)
+    else:
+        model = ols(formula, data=df).fit()
     return model
 
 

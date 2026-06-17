@@ -55,11 +55,24 @@ st.markdown(
 # Helper function to cache data loading & validation
 @st.cache_data
 def load_cached_data(name):
-    filepath = RAW_DATA_DIR / f"{name}.csv"
-    if not filepath.exists():
-        st.error(f"File not found: {filepath}")
+    """Load and validate dataset through the DataLoader pipeline."""
+    try:
+        import sys
+
+        sys.path.insert(0, str(ROOT_DIR / "src"))
+        from stats_series.data_loader import DataLoader
+
+        loader = DataLoader()
+        if name in loader.schema:
+            return loader.load_dataset(name)
+        else:
+            filepath = RAW_DATA_DIR / f"{name}.csv"
+            if not filepath.exists():
+                raise FileNotFoundError(f"File not found: {filepath}")
+            return pd.read_csv(filepath)
+    except (FileNotFoundError, ValueError) as exc:
+        st.error(f"Data loading/validation failed: {exc}")
         return pd.DataFrame()
-    return pd.read_csv(filepath)
 
 
 # Precompute and save aggregations to data/processed/ for reproducible research
@@ -68,8 +81,8 @@ def save_processed_aggregations(name, df_agg):
         PROCESSED_DATA_DIR.mkdir(parents=True, exist_ok=True)
         dest_path = PROCESSED_DATA_DIR / f"{name}_aggregations.csv"
         df_agg.to_csv(dest_path, index=False)
-    except Exception:
-        pass  # Ignore permission issues silently during streamlit load
+    except OSError as exc:
+        st.warning(f"Could not save processed aggregation: {exc}")
 
 
 # Standard helper to calculate Cohen's d
@@ -263,8 +276,9 @@ elif analysis_option == "Customer Spend & Browsing (Linear Regression)":
             # Implement out-of-sample train/test split (80-20)
             train_df, test_df = train_test_split(filtered_df, test_size=0.2, random_state=42)
 
-            # Fit model on training data
+            # Fit model on training data (classical and HC3-robust)
             model = ols(formula, data=train_df).fit()
+            model_robust = ols(formula, data=train_df).fit(cov_type="HC3")
 
             # Train/Test Metrics
             train_r2 = model.rsquared
@@ -393,7 +407,7 @@ elif analysis_option == "Customer Spend & Browsing (Linear Regression)":
                 if shapiro_p < 0.05:
                     st.caption("Residuals are not normally distributed (p < 0.05)")
                 else:
-                    st.caption("Fail to reject normality (residuals are normally distributed)")
+                    st.caption("No statistically significant evidence against residual normality was detected")
 
             with diag_metrics_col3:
                 # Heteroscedasticity (Breusch-Pagan)
@@ -404,16 +418,17 @@ elif analysis_option == "Customer Spend & Browsing (Linear Regression)":
                 if bp_lm_p < 0.05:
                     st.caption("Heteroscedasticity detected (p < 0.05)")
                 else:
-                    st.caption("Fail to reject homoscedasticity (residuals have equal spread)")
+                    st.caption("No statistically significant evidence of heteroscedasticity was detected")
 
             # Business decision support
             assumptions_ok = (shapiro_p >= 0.05) and (bp_lm_p >= 0.05)
             status_text = "well satisfied" if assumptions_ok else "mostly violated; proceed with caution"
             st.success(
-                f"**Takeaway:** Controlling for other metrics, each additional unit of duration predicts "
-                f"an increase of **${model.params.get('Session_Duration', 0.0):.2f}** in order value. "
-                "UX investments to increase retention are highly justified. Residual validation confirms "
-                f"that model assumptions are {status_text}."
+                f"**Takeaway:** Holding other metrics constant, customers with one additional unit of duration "
+                f"had an estimated **${model.params.get('Session_Duration', 0.0):.2f}** higher order value. "
+                "This is a predictive association from observational data. A randomized experiment "
+                "is needed before allocating UX investment based on this finding. Residual validation: "
+                f"model assumptions are {status_text}."
             )
         else:
             st.warning("Not enough data points selected to fit regression model.")

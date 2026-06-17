@@ -24,7 +24,7 @@
 ---
 
 ### 💼 Recruiter Summary
-> This repository showcases end-to-end analytical rigor, translating raw, noisy datasets into statistical proof and actionable business strategies. Built with Python (`pandas`, `scipy`, `statsmodels`, `scikit-learn`), it demonstrates out-of-sample predictive validation, linear model assumption checking, and robust effect-size reporting. Every project transitions from data cleaning and schema validation to automated testing and interactive, stakeholder-facing dashboards.
+> This repository showcases end-to-end analytical rigor, translating raw, noisy datasets into statistical evidence and decision-relevant estimates. Built with Python (`pandas`, `scipy`, `statsmodels`, `scikit-learn`), it demonstrates out-of-sample predictive validation, linear model assumption checking (including HC3 heteroscedasticity-robust inference), and robust effect-size reporting. Every project transitions from data cleaning and schema validation to automated testing and interactive, stakeholder-facing dashboards.
 
 ---
 
@@ -43,10 +43,10 @@ Explore all statistical studies, regression diagnostics, relative risk engines, 
 | Metric | Result |
 |--------|--------|
 | **Spend Prediction** | $R^2 = 0.710$ — pages visited + session duration explain 71% of customer order values |
-| **Strongest Driver** | Pages Visited (Standardized Beta: 0.620, $p < 0.001$) — each extra page predicts **+$3.48** in spend |
+| **Largest Predictor (high collinearity caveat)** | Pages Visited (Standardized Beta: 0.620, $p < 0.001$) — customers with one extra page view had an estimated **+$3.48** higher order value. VIF ≈ 7.26; independent effects require cautious interpretation |
 | **RFM Segments** | 3 customer tiers: Champions (22.4%), Loyal (54.8%), At-Risk (22.8%) |
 | **Retention Hypothesis** | Segment membership does **not** predict repeat purchase ($p = 0.551$, Cramer's V: 0.0345) |
-| **Business Recommendation** | Invest in site UX, not segment-wide loyalty campaigns |
+| **Business Recommendation** | Predictive association warrants a controlled A/B experiment of UX changes; not a direct investment recommendation |
 
 <p align="center">
   <img src="applied/signature-project/outputs/figures/correlation_heatmap.png" alt="Correlation Heatmap" width="48%" />
@@ -93,20 +93,22 @@ Explore all statistical studies, regression diagnostics, relative risk engines, 
 
 ---
 
-#### 4. [Discount Retention & Relative Risk Analysis](applied/case-studies/discount-vs-retention/)
+#### 4. [Binary Discount Experiment — Retention & Profit Analysis](applied/notebooks/05-do-discounts-work.ipynb)
+
+> **Dataset:** `ecommerce.csv` — binary (any discount vs. no discount). *Not to be confused with the tiered discount-depth study below using `customer_discounts.csv`.*
 
 | Metric | Result |
 |--------|--------|
 | **Chi-Square Test** | Statistically significant ($p = 0.018$), but small effect (Cramer's V = 0.075) |
-| **Risk Ratio** | 1.21 (95% CI: [1.03, 1.41]) — discounts boost repeat purchases by ~21% |
+| **Risk Ratio** | 1.21 (95% CI: [1.03, 1.41]) — discounts associated with ~21% higher repeat rate |
 | **Financial Reality** | Expected profit **drops 39.6%** (from $10.19 to $6.15/customer) due to margin cut |
 | **Verdict** | Reject rollout — retention lift doesn't compensate margin compression |
 
 <p align="center">
-  <img src="applied/case-studies/discount-vs-retention/discount_retention_curve.png" alt="Discount Retention Curve" width="70%" />
+  <img src="applied/notebooks/05_discount_ab_test.png" alt="Discount A/B Test" width="70%" />
 </p>
 
-**Artifacts:** [Analysis Notebook](applied/case-studies/discount-vs-retention/discount_retention.ipynb)
+**Artifacts:** [Analysis Notebook](applied/notebooks/05-do-discounts-work.ipynb)
 
 ---
 
@@ -163,7 +165,7 @@ The concepts behind every data decision. Each module = 5–10 days of focused le
 
 ### Part 2: Applied — Python + Real Data
 
-Theory means nothing without application. These notebooks answer **real business questions** using real datasets.
+Theory means nothing without application. These notebooks answer **real business questions** using synthetic business scenarios and selected public datasets.
 
 | # | Notebook | Business Question | Key Result | Key Skill |
 |---|----------|-------------------|------------|-----------|
@@ -188,9 +190,9 @@ Complete analyses that show the full pipeline: question → data → analysis �
 | Case Study | Key Finding | Statistical Evidence |
 |------------|-------------|---------------------|
 | [Screen Time vs Productivity](applied/case-studies/screen-time-vs-productivity/) | Productivity drops 31% beyond 6 hrs/day screen time | Pearson r = −0.74, Cohen's d = 1.95 (very large) |
-| [Do Discounts Drive Retention?](applied/case-studies/discount-vs-retention/) | Discounts attract deal-seekers, not loyal customers | Chi-Square $p = 0.34$; 30%+ tier has lowest return rate (22%) |
+| [Discount-Depth vs Retention](applied/case-studies/discount-vs-retention/) *(tiered: `customer_discounts.csv`)* | Deep discounts attract deal-seekers, not loyal customers | Chi-Square $p = 0.34$; 30%+ tier has lowest return rate (22%) |
 | [Restaurant Tipping Behavior](applied/case-studies/restaurant-tipping-behavior/) | Bill size + party size explain 46.8% of tip variance | OLS $R^2 = 0.468$; Welch's $p = 0.51$ (no lunch/dinner difference) |
-| [Signature Project: Customer Analytics](applied/signature-project/) | Page views are the #1 spend predictor (Beta = 0.62) | OLS $R^2 = 0.710$; RFM ≠ retention ($p = 0.551$) |
+| [Signature Project: Customer Analytics](applied/signature-project/) | Page views show largest predictive association (Beta = 0.62, VIF caveat) | OLS $R^2 = 0.710$ (HC3-robust); RFM ≠ retention ($p = 0.551$) |
 
 ---
 

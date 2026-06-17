@@ -27,7 +27,7 @@
 # We establish our rules of significance and business actions:
 # 1. **Statistical Significance:** All hypothesis tests and regression models use $\alpha = 0.05$.
 # 2. **Segmentation Strategy:** We will only recommend targeted marketing campaigns for segments if the Chi-Square test confirms that customer segments are significantly associated with repeat purchase rates ($p < 0.05$).
-# 3. **Regression Actionability:** We will recommend UX/page view optimizations only if the OLS model out-of-sample test error (RMSE) is at least 20% lower than the baseline mean predictor.
+# 3. **Regression Flagging:** We will flag UX/page-view optimization as a candidate for experimental validation if the OLS model out-of-sample test error (RMSE) is at least 20% lower than the baseline mean predictor. A predictive association alone does not justify investment — a randomized experiment is required.
 
 # %%
 from pathlib import Path
@@ -43,8 +43,12 @@ from statsmodels.stats.diagnostic import het_breuschpagan
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error, mean_absolute_error
 
-# Import our custom DataLoader package to validate data schema
 from statsmodels.graphics.gofplots import qqplot
+
+# Import our custom DataLoader package to validate data schema
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[3] / "src") if "__file__" in dir() else str(Path().resolve().parents[2] / "src"))
+from stats_series.data_loader import DataLoader
 
 # Setup paths relative to signature project folder
 try:
@@ -67,9 +71,10 @@ plt.rcParams['figure.dpi'] = 100
 # We load the e-commerce dataset and perform validation checks.
 
 # %%
-# Load data
-df = pd.read_csv(RAW_DATA_PATH)
-print(f"Loaded {len(df)} customer rows.")
+# Load data via validated DataLoader pipeline
+loader = DataLoader()
+df = loader.load_dataset("ecommerce")
+print(f"Loaded {len(df)} customer rows (schema validated).")
 
 # Check for duplicates & missing values
 duplicates_count = df.duplicated(subset=['Customer_ID']).sum()
@@ -130,9 +135,13 @@ plt.show()
 # Train-Test Split (80% Train, 20% Test, Seed 42)
 train_df, test_df = train_test_split(df, test_size=0.2, random_state=42)
 
-# Fit OLS model on training set
+# Fit OLS model on training set (classical and HC3-robust for comparison)
 model = ols('Total_Spend ~ Session_Duration + Pages_Visited', data=train_df).fit()
+model_robust = ols('Total_Spend ~ Session_Duration + Pages_Visited', data=train_df).fit(cov_type="HC3")
+print("=== Classical OLS (assumes homoscedastic errors) ===")
 print(model.summary())
+print("\n=== HC3 Heteroscedasticity-Robust Standard Errors ===")
+print(model_robust.summary())
 
 # %% [markdown]
 # ### Standardized Coefficients & 95% Confidence Intervals
@@ -146,12 +155,14 @@ std_y = train_df['Total_Spend'].std()
 beta_duration = model.params['Session_Duration'] * (std_x1 / std_y)
 beta_pages = model.params['Pages_Visited'] * (std_x2 / std_y)
 
-print("Regression Effect Size & CI Analytics:")
+print("Regression Effect Size & CI Analytics (Classical + HC3 Robust):")
 print("=" * 60)
 print(f"  Session Duration Beta: {beta_duration:.4f}")
 print(f"  Pages Visited Beta:    {beta_pages:.4f}")
-print("\n95% Confidence Intervals for Coefficients:")
+print("\n95% Confidence Intervals (Classical OLS):")
 print(model.conf_int())
+print("\n95% Confidence Intervals (HC3 Robust):")
+print(model_robust.conf_int())
 
 # %% [markdown]
 # ### Out-of-Sample Validation
@@ -222,6 +233,14 @@ print(f"\nShapiro-Wilk test for residuals normality (p-value): {shapiro_p:.4e}")
 # Breusch-Pagan heteroscedasticity test
 bp_lm, bp_lm_p, bp_f, bp_f_p = het_breuschpagan(residuals, X.values)
 print(f"Breusch-Pagan test for heteroscedasticity (p-value): {bp_lm_p:.4e}")
+
+# %% [markdown]
+# ### Multicollinearity Caveat
+# > **Note:** Session_Duration and Pages_Visited have VIF values of approximately 7.26, indicating
+# > substantial multicollinearity. Pages_Visited had the larger standardized coefficient within this
+# > specification, but the predictors are highly correlated (Pearson r ≈ 0.93), so their independent
+# > effects should be interpreted cautiously. Coefficient stability under resampling or ridge
+# > regression would strengthen any claim about relative predictor importance.
 
 # %% [markdown]
 # ## Step 6: Customer Segmentation (RFM Analysis)
@@ -311,6 +330,6 @@ print(f"  Cramer's V (Effect):  {cramers_v:.4f} ({signif})")
 # ## Executive Business Recommendations
 # Based on the empirical outputs, we make the following recommendations:
 # 1. **Differentiated Loyalty Strategy:** We caution against running segment-wide loyalty programs under the assumption that "Champions" are naturally more likely to buy again in the future. Since the Chi-Square test shows no significant association between segment and repeat purchase rates ($p = 0.55$), loyalty re-engagement should focus on individual user purchase intervals rather than static RFM group bins.
-# 2. **UX Page View Optimizations:** Engineering budget should be allocated to speed up page load speeds. Controlling for session time, each extra page click predicts **$3.48** in incremental spend ($p < 0.001$, CI: [$2.91$, $4.04$]). This satisfies our pre-analysis practical decision rule of explaining $\ge 30\%$ variance ($R^2 = 0.710$) and predicting $> $1.50 per page view.
-# 3. **Targeted Couponing:** Transition away from blanket site-wide discounts (which fail the unit economics simulation in our coupon notebook) and restrict coupon distributions specifically to price-sensitive churned shoppers to re-acquire them without sacrificing overall profit margins.
+# 2. **UX Optimization Candidate (Requires Experimental Validation):** Holding session duration constant, customers with one additional page view had an estimated **$3.48** higher order value in this synthetic dataset ($p < 0.001$, HC3-robust CI: see model output above). This predictive association flags UX/page-speed changes as a high-priority candidate for a randomized A/B experiment. However, the regression coefficient does not establish that forcing additional page views will cause higher spend — high-spending customers may simply browse more (reverse causality). **Recommendation: prioritize a controlled A/B test of specific page-speed or navigation changes before allocating engineering budget.**
+# 3. **Coupon Strategy:** A separate analysis on the binary discount variable ([notebook 05](../../notebooks/05-do-discounts-work.ipynb)) found that while discounts show a statistically significant association with repeat purchases ($p = 0.018$), the expected profit per customer drops by approximately 39.6% due to margin compression. Any coupon distribution strategy should be targeted at price-sensitive churned shoppers, not applied site-wide.
 

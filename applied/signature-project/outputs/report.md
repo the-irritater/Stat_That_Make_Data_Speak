@@ -12,9 +12,9 @@ We conducted a comprehensive end-to-end customer analytics study on e-commerce t
 
 ### 📈 Engagement vs. Order Values (OLS Regression)
 - **Variance Explained:** Browsing time and page view density together explain **71.0%** of customer order values ($R^2 = 0.710$), outperforming our baseline model by **44.8%** in predictive accuracy.
-- **The Page View Premium:** Controlling for browsing duration, each additional page view predicts an average spend increase of **$3.48** (95% CI: [$2.91$, $4.04$], $p < 0.001$).
-- **The Duration Nudge:** Controlling for pages clicked, each extra minute of session duration predicts an average spend increase of **$1.11** (95% CI: [$0.63$, $1.59$], $p < 0.001$).
-- **Relative Importance:** Standardized coefficients (Beta weights) indicate that Pages Visited (Beta: 0.620) is a much stronger predictor of purchase size than Session Duration (Beta: 0.234).
+- **The Page View Association:** Holding session duration constant, customers with one additional page view had an estimated **$3.48** higher order value (95% CI: [$2.91$, $4.04$], $p < 0.001$). HC3-robust standard errors were computed alongside classical OLS to account for mild heteroscedasticity.
+- **The Duration Association:** Holding pages visited constant, customers with one extra minute of session duration had an estimated **$1.11** higher order value (95% CI: [$0.63$, $1.59$], $p < 0.001$).
+- **Relative Importance (caveat):** Standardized coefficients indicate that Pages Visited (Beta: 0.620) had a larger coefficient than Session Duration (Beta: 0.234), but these predictors are highly correlated (VIF ≈ 7.26), so their independent effects should be interpreted cautiously.
 
 ### 🏷️ RFM Customer Segmentation (Recency, Frequency, Monetary)
 We classified customers into three distinct value segments based on Recency, Frequency, and Monetary scores:
@@ -36,6 +36,6 @@ We evaluated if segment membership predicts a customer's repeat purchase rate us
 
 Based on our empirical models, we propose three core interventions:
 
-1. **Invest in Site Performance & Page Load Speeds:** Since page views are the single strongest predictor of transaction value (Beta: 0.620) and each extra page view generates an expected **$3.48** in spend, optimizing site navigation and layout to encourage page exploration is our highest ROI initiative. This satisfies our pre-analysis regression rule.
+1. **Prioritize a Controlled UX Experiment:** Since page views show the strongest predictive association with order value (Beta: 0.620, $p < 0.001$), specific page-speed or navigation changes should be tested through a randomized A/B experiment before allocating engineering budget. The regression coefficient is a predictive association from observational data — high-spending customers may simply browse more pages (reverse causality). The association warrants investigation but not direct investment without experimental validation.
 2. **Individualized Loyalty Strategy:** Do not launch segment-wide loyalty campaigns under the assumption that "Champions" have a higher repeat purchase rate than others (the difference is statistically negligible, $p = 0.55$). Re-engagement campaigns should instead be triggered by individualized customer purchase intervals.
-3. **Targeted coupon distributions:** Transition away from blanket site-wide promotions (which decrease net profits by 39% due to margin cut) and target coupons strictly at churned, price-sensitive shoppers to win them back.
+3. **Targeted Coupon Distributions:** A separate analysis on the binary discount variable ([notebook 05](../../applied/notebooks/05-do-discounts-work.ipynb)) found that while discounts show a statistically significant association with repeat purchases ($p = 0.018$), the expected profit per customer drops by approximately 39.6% due to margin compression. Coupon distributions should be restricted to price-sensitive churned shoppers, not applied site-wide.

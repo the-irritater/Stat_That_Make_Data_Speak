@@ -43,9 +43,10 @@ jobs:
 
     - name: Verify Notebook Execution
       run: |
-        jupyter nbconvert --to notebook --execute applied/notebooks/*.ipynb --inplace
-        jupyter nbconvert --to notebook --execute applied/case-studies/**/*.ipynb --inplace
-        # We will also execute signature project notebooks once they are created
+        mkdir -p /tmp/nb-output
+        jupyter nbconvert --to notebook --execute applied/notebooks/*.ipynb --output-dir=/tmp/nb-output/
+        jupyter nbconvert --to notebook --execute applied/case-studies/**/*.ipynb --output-dir=/tmp/nb-output/
+        jupyter nbconvert --to notebook --execute applied/signature-project/notebooks/*.ipynb --output-dir=/tmp/nb-output/ --ExecutePreprocessor.timeout=600
 
     - name: Upload coverage reports to Codecov
       uses: codecov/codecov-action@v4

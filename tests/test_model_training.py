@@ -93,3 +93,28 @@ def test_calculate_correlation_exceptions():
 
     with pytest.raises(KeyError):
         calculate_correlation(df, "X", "Z")
+
+
+def test_fit_ols_regression_exceptions_and_cov():
+    # Test TypeError for non-DataFrame input
+    with pytest.raises(TypeError, match="Input must be a pandas DataFrame"):
+        fit_ols_regression("not a dataframe", "Y ~ X")
+
+    # Test fit with robust standard errors (cov_type="HC3")
+    df = pd.DataFrame({"X": [1, 2, 3, 4, 5], "Y": [2, 4, 5, 4, 5]})
+    model = fit_ols_regression(df, "Y ~ X", cov_type="HC3")
+    assert model.cov_type == "HC3"
+
+
+def test_run_chi_square_exceptions():
+    df = pd.DataFrame({"cat1": ["A", "B"], "cat2": ["Val1", "Val2"]})
+    # Test KeyError for missing columns
+    with pytest.raises(KeyError, match="not found in DataFrame"):
+        run_chi_square_test(df, "cat1", "missing_col")
+
+
+def test_calculate_correlation_invalid_method():
+    df = pd.DataFrame({"X": [1.0, 2.0, 3.0], "Y": [2.0, 4.0, 5.0]})
+    # Test ValueError for invalid method
+    with pytest.raises(ValueError, match="Method must be either 'pearson' or 'spearman'"):
+        calculate_correlation(df, "X", "Y", method="invalid_method")
