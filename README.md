@@ -36,20 +36,77 @@ Explore all statistical studies, regression diagnostics, relative risk engines, 
 
 ### 🏆 Featured Projects (Best Work)
 
-1. **[Signature Project: End-to-End Customer Analytics](applied/signature-project/)**
-   - **Focus:** Custom schema verification, multiple OLS regression, RFM customer segmentation, and Chi-Square independence testing.
-   - **Key Finding:** Page clicks are the strongest spend predictor (Standardized Beta: 0.62, $p < 0.001$). RFM segment membership does not statistically predict repeat purchase rates ($p = 0.551$, Cramer's V: 0.0345), warning against blanket segment-wide loyalty campaigns.
-   - **Artifacts:** [Jupyter Notebook](applied/signature-project/notebooks/customer_analytics.ipynb) | [Executive Business Report](applied/signature-project/outputs/report.md)
+#### 1. [Signature Project: End-to-End Customer Analytics](applied/signature-project/)
 
-2. **[Restaurant Tipping Behavior Welch's t-test & OLS](applied/case-studies/restaurant-tipping-behavior/)**
-   - **Focus:** Welch's two-sample t-test, OLS regression with VIF collinearity and residuals diagnostics (Shapiro-Wilk, Breusch-Pagan).
-   - **Key Finding:** Sunday dinners yield the highest median spend. Tipping percentage shows no significant difference between lunch and dinner (p = 0.51), confirming table turnover volume should be Saturdays' primary focus.
-   - **Artifacts:** [Analysis Notebook](applied/case-studies/restaurant-tipping-behavior/analysis.ipynb)
+> Full-pipeline analytics: schema validation → OLS regression → RFM segmentation → Chi-Square hypothesis testing → executive report
 
-3. **[Discount Retention & Relative Risk Analysis](applied/case-studies/discount-vs-retention/)**
-   - **Focus:** Chi-Square Test of Independence, Relative Risk (Risk Ratio) and retention lift with 95% Confidence Intervals.
-   - **Key Finding:** Capping promotions at 20% maximizes LTV. Deep 50% discounts attract transient coupon-hunting churners, yielding the worst long-term retention.
-   - **Artifacts:** [Analysis Notebook](applied/case-studies/discount-vs-retention/discount_retention.ipynb)
+| Metric | Result |
+|--------|--------|
+| **Spend Prediction** | $R^2 = 0.710$ — pages visited + session duration explain 71% of customer order values |
+| **Strongest Driver** | Pages Visited (Standardized Beta: 0.620, $p < 0.001$) — each extra page predicts **+$3.48** in spend |
+| **RFM Segments** | 3 customer tiers: Champions (22.4%), Loyal (54.8%), At-Risk (22.8%) |
+| **Retention Hypothesis** | Segment membership does **not** predict repeat purchase ($p = 0.551$, Cramer's V: 0.0345) |
+| **Business Recommendation** | Invest in site UX, not segment-wide loyalty campaigns |
+
+<p align="center">
+  <img src="applied/signature-project/outputs/figures/correlation_heatmap.png" alt="Correlation Heatmap" width="48%" />
+  <img src="applied/signature-project/outputs/figures/spend_residual_diagnostics.png" alt="Residual Diagnostics" width="48%" />
+</p>
+<p align="center">
+  <img src="applied/signature-project/outputs/figures/segment_profiles.png" alt="RFM Segment Profiles" width="48%" />
+  <img src="applied/signature-project/outputs/figures/total_spend_distribution.png" alt="Spend Distribution" width="48%" />
+</p>
+
+**Artifacts:** [Jupyter Notebook](applied/signature-project/notebooks/customer_analytics.ipynb) | [Executive Business Report](applied/signature-project/outputs/report.md)
+
+---
+
+#### 2. [Restaurant Tipping Behavior — Welch's t-test & OLS](applied/case-studies/restaurant-tipping-behavior/)
+
+| Metric | Result |
+|--------|--------|
+| **Tip Prediction (OLS)** | $R^2 = 0.468$ — bill size + party size explain 46.8% of tip variance |
+| **Bill Size Effect** | Each +$1 bill → +$0.09 tip (95% CI: [$0.075$, $0.111$], $p < 0.001$) |
+| **Lunch vs Dinner Tip %** | No significant difference (Welch's $p = 0.5145$, Cohen's d = 0.076) |
+| **Diagnostics** | VIF, Shapiro-Wilk, Breusch-Pagan all reported |
+
+<p align="center">
+  <img src="applied/case-studies/restaurant-tipping-behavior/residual_diagnostics.png" alt="Residual Diagnostics" width="70%" />
+</p>
+
+**Artifacts:** [Analysis Notebook](applied/case-studies/restaurant-tipping-behavior/analysis.ipynb) | [Case Study README](applied/case-studies/restaurant-tipping-behavior/README.md)
+
+---
+
+#### 3. [Marketing Campaign A/B Test — Dual Hypothesis Testing](applied/notebooks/07-is-campaign-working.ipynb)
+
+| Metric | Result |
+|--------|--------|
+| **Conversion Lift** | 11.5% → 15.8% (Risk Ratio: 1.37, 95% CI: [1.11, 1.68], $p < 0.001$) |
+| **Spend Lift** | $42.06 → $45.19 per buyer (Cohen's d = 0.32, $p = 0.004$) |
+| **Multiple Testing** | Bonferroni-corrected α = 0.025 — both endpoints pass |
+| **Projected Revenue** | +47.7% revenue uplift at 10K users ($71,219 vs $48,369) |
+
+<p align="center">
+  <img src="applied/notebooks/07_ab_test_results.png" alt="A/B Test Results" width="80%" />
+</p>
+
+---
+
+#### 4. [Discount Retention & Relative Risk Analysis](applied/case-studies/discount-vs-retention/)
+
+| Metric | Result |
+|--------|--------|
+| **Chi-Square Test** | Statistically significant ($p = 0.018$), but small effect (Cramer's V = 0.075) |
+| **Risk Ratio** | 1.21 (95% CI: [1.03, 1.41]) — discounts boost repeat purchases by ~21% |
+| **Financial Reality** | Expected profit **drops 39.6%** (from $10.19 to $6.15/customer) due to margin cut |
+| **Verdict** | Reject rollout — retention lift doesn't compensate margin compression |
+
+<p align="center">
+  <img src="applied/case-studies/discount-vs-retention/discount_retention_curve.png" alt="Discount Retention Curve" width="70%" />
+</p>
+
+**Artifacts:** [Analysis Notebook](applied/case-studies/discount-vs-retention/discount_retention.ipynb)
 
 ---
 
@@ -78,12 +135,12 @@ graph TD
 ---
 
 ### 🛠️ Repository Maturity Roadmap
-| Component | Features Implemented | CI Verification | Status |
-|-----------|----------------------|-----------------|--------|
-| **Data Ingestion** | Schema validation, duplicate primary key checks, type assertions | Yes (pytest) | 100% Complete |
-| **Statistical Notebooks** | Pre-analysis rules, effect sizes, CIs, diagnostic checks, non-causal phrasing | Yes (Jupyter Execution CI) | 100% Complete |
-| **Interactive Dashboard** | Landing page, download buttons, interactive t-tests/RR, residual plots, VIF | Manual & Pytest | 100% Complete |
-| **Testing Suite** | Pytest unit tests, coverage reports | Yes (GitHub Actions, >85% Gate) | 100% Complete |
+| Component | Features Implemented | CI Verification | Status | Next Milestone |
+|-----------|----------------------|-----------------|--------|----------------|
+| **Data Ingestion** | Schema validation, duplicate PK checks, type assertions | Yes (pytest) | ✅ Complete | Add data versioning |
+| **Statistical Notebooks** | Pre-analysis rules, effect sizes, CIs, diagnostics, non-causal phrasing | Yes (Jupyter Execution CI) | ✅ Complete | Time-series & Bayesian modules |
+| **Interactive Dashboard** | Landing page, download buttons, interactive t-tests/RR, residual plots, VIF | Manual & Pytest | ✅ Complete | Add drill-down filtering |
+| **Testing Suite** | Pytest unit tests, coverage reports | Yes (GitHub Actions, ≥85% Gate) | ✅ Complete | Integration tests |
 
 ---
 
@@ -108,26 +165,32 @@ The concepts behind every data decision. Each module = 5–10 days of focused le
 
 Theory means nothing without application. These notebooks answer **real business questions** using real datasets.
 
-| # | Notebook | Business Question | Key Skill |
-|---|----------|-------------------|-----------|
-| 1 | [What does our sales data actually look like?](applied/notebooks/01-what-does-sales-data-look-like.ipynb) | Understanding data before making decisions | EDA, Distributions |
-| 2 | [Analyzing customer spending patterns](applied/notebooks/02-customer-spending-patterns.ipynb) | Where does the money come from? | Mean, Median, Grouping |
-| 3 | [What actually drives sales?](applied/notebooks/03-what-drives-sales.ipynb) | Which factors matter most? | Correlation Analysis |
-| 4 | [Predicting customer spend](applied/notebooks/04-predicting-customer-spend.ipynb) | Can we forecast revenue? | Linear Regression |
-| 5 | [Do discounts increase repeat purchases?](applied/notebooks/05-do-discounts-work.ipynb) | Should we keep running promos? | A/B Testing |
-| 6 | [Who are our best buyers?](applied/notebooks/06-who-are-best-buyers.ipynb) | How do we target the right people? | Customer Segmentation |
-| 7 | [Is this campaign actually working?](applied/notebooks/07-is-campaign-working.ipynb) | Are we wasting marketing budget? | Hypothesis Testing |
+| # | Notebook | Business Question | Key Result | Key Skill |
+|---|----------|-------------------|------------|-----------|
+| 1 | [What does our sales data actually look like?](applied/notebooks/01-what-does-sales-data-look-like.ipynb) | Understanding data before decisions | 65% of transactions on weekends; median tip 15.5% (more honest than mean 16.1%) | EDA, Distributions |
+| 2 | [Analyzing customer spending patterns](applied/notebooks/02-customer-spending-patterns.ipynb) | Where does the money come from? | Sunday dinner = highest-value segment; per-person spend drops 30%+ for larger parties | Mean, Median, Grouping |
+| 3 | [What actually drives sales?](applied/notebooks/03-what-drives-sales.ipynb) | Which factors matter most? | Bill↔Tip: r = 0.68; Bill↔Tip%: r = −0.34 (tipping rate *shrinks* on bigger bills) | Correlation Analysis |
+| 4 | [Predicting customer spend](applied/notebooks/04-predicting-customer-spend.ipynb) | Can we forecast revenue? | $R^2 = 0.473$; each extra page view → +$2.87 spend; 27.5% RMSE reduction vs baseline | Linear Regression |
+| 5 | [Do discounts increase repeat purchases?](applied/notebooks/05-do-discounts-work.ipynb) | Should we keep running promos? | Chi-Square $p = 0.018$, but expected profit drops 39.6% — reject rollout | A/B Testing |
+| 6 | [Who are our best buyers?](applied/notebooks/06-who-are-best-buyers.ipynb) | How do we target the right people? | Top 25% of customers (RFM) generate 60%+ of total revenue | Customer Segmentation |
+| 7 | [Is this campaign actually working?](applied/notebooks/07-is-campaign-working.ipynb) | Are we wasting marketing budget? | +47.7% revenue uplift (both endpoints survive Bonferroni correction) | Hypothesis Testing |
+
+<p align="center">
+  <img src="applied/notebooks/03_correlation_heatmap.png" alt="Correlation Heatmap" width="32%" />
+  <img src="applied/notebooks/06_customer_segments_scatter.png" alt="Customer Segmentation" width="32%" />
+  <img src="applied/notebooks/04_residuals_diagnostic.png" alt="Residual Diagnostics" width="32%" />
+</p>
 
 ### Part 3: Case Studies & Projects
 
 Complete analyses that show the full pipeline: question → data → analysis → business insight.
 
-| Case Study | Key Finding |
-|------------|-------------|
-| [Screen Time vs Productivity](applied/case-studies/screen-time-vs-productivity/) | Higher screen time (>6 hrs) shows negative correlation with productivity scores |
-| [Do Discounts Drive Retention?](applied/case-studies/discount-vs-retention/) | Discount depth doesn't predict customer return rate |
-| [Restaurant Tipping Behavior (Real-World)](applied/case-studies/restaurant-tipping-behavior/) | Bill size and party size explain 46.8% of variance in tips; tipping percentage is similar between lunch and dinner (p = 0.51) |
-| [Signature Project: Customer Analytics](applied/signature-project/) | Multiple regression spend forecasts and RFM profiles |
+| Case Study | Key Finding | Statistical Evidence |
+|------------|-------------|---------------------|
+| [Screen Time vs Productivity](applied/case-studies/screen-time-vs-productivity/) | Productivity drops 31% beyond 6 hrs/day screen time | Pearson r = −0.74, Cohen's d = 1.95 (very large) |
+| [Do Discounts Drive Retention?](applied/case-studies/discount-vs-retention/) | Discounts attract deal-seekers, not loyal customers | Chi-Square $p = 0.34$; 30%+ tier has lowest return rate (22%) |
+| [Restaurant Tipping Behavior](applied/case-studies/restaurant-tipping-behavior/) | Bill size + party size explain 46.8% of tip variance | OLS $R^2 = 0.468$; Welch's $p = 0.51$ (no lunch/dinner difference) |
+| [Signature Project: Customer Analytics](applied/signature-project/) | Page views are the #1 spend predictor (Beta = 0.62) | OLS $R^2 = 0.710$; RFM ≠ retention ($p = 0.551$) |
 
 ---
 
