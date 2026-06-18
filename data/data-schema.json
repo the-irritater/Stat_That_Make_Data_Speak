@@ -3,36 +3,47 @@
     "columns": {
       "total_bill": {
         "type": "float",
+        "nullable": false,
+        "minimum": 0.0,
         "unit": "USD",
         "description": "Total price of the meal including tax"
       },
       "tip": {
         "type": "float",
+        "nullable": false,
+        "minimum": 0.0,
         "unit": "USD",
         "description": "Tip amount left for the server"
       },
       "sex": {
         "type": "category",
+        "nullable": false,
         "options": ["Male", "Female"],
         "description": "Gender of the payer"
       },
       "smoker": {
         "type": "category",
+        "nullable": false,
         "options": ["Yes", "No"],
         "description": "Whether the party had smokers"
       },
       "day": {
         "type": "category",
+        "nullable": false,
         "options": ["Thur", "Fri", "Sat", "Sun"],
         "description": "Day of the week"
       },
       "time": {
         "type": "category",
+        "nullable": false,
         "options": ["Lunch", "Dinner"],
         "description": "Meal time of day"
       },
       "size": {
         "type": "integer",
+        "nullable": false,
+        "minimum": 1,
+        "maximum": 20,
         "unit": "count",
         "description": "Party size"
       }
@@ -43,45 +54,60 @@
       "Customer_ID": {
         "type": "integer",
         "primary_key": true,
+        "nullable": false,
         "description": "Unique e-commerce customer identifier"
       },
       "Session_Duration": {
         "type": "float",
+        "nullable": false,
+        "minimum": 0.0,
         "unit": "minutes",
         "description": "Total website session duration in minutes"
       },
       "Pages_Visited": {
         "type": "integer",
+        "nullable": false,
+        "minimum": 1,
         "unit": "count",
         "description": "Number of pages clicked during session"
       },
       "Discount_Applied": {
         "type": "category",
+        "nullable": false,
         "options": ["Yes", "No"],
         "description": "Whether a promotional discount was applied"
       },
       "Total_Spend": {
         "type": "float",
+        "nullable": false,
+        "minimum": 0.0,
         "unit": "USD",
         "description": "Transaction total spend value"
       },
       "Repeat_Purchase": {
         "type": "integer",
+        "nullable": false,
         "options": [0, 1],
         "description": "Binary indicator for customer returning to buy again"
       },
       "Recency": {
         "type": "integer",
+        "nullable": false,
+        "minimum": 0,
         "unit": "days",
         "description": "Number of days since last purchase"
       },
       "Frequency": {
         "type": "integer",
+        "nullable": false,
+        "minimum": 0,
         "unit": "count",
         "description": "Number of purchases made in last year"
       },
       "Monetary": {
         "type": "float",
+        "nullable": false,
+        "minimum": 0.0,
         "unit": "USD",
         "description": "Total customer lifetime monetary spend value"
       }
@@ -92,20 +118,25 @@
       "User_ID": {
         "type": "integer",
         "primary_key": true,
+        "nullable": false,
         "description": "Unique identifier for the campaign participant"
       },
       "Campaign_Group": {
         "type": "category",
+        "nullable": false,
         "options": ["Control", "Test"],
         "description": "A/B test group allocation (Control vs Test)"
       },
       "Converted": {
         "type": "integer",
+        "nullable": false,
         "options": [0, 1],
         "description": "Binary conversion indicator (1 = Purchased, 0 = Did not purchase)"
       },
       "Purchase_Amount": {
         "type": "float",
+        "nullable": false,
+        "minimum": 0.0,
         "unit": "USD",
         "description": "Spend value associated with the conversion (0.0 if not converted)"
       }
@@ -116,25 +147,34 @@
       "User_ID": {
         "type": "integer",
         "primary_key": true,
+        "nullable": false,
         "description": "Unique user participant identifier"
       },
       "Screen_Time_Hours": {
         "type": "float",
+        "nullable": false,
+        "minimum": 0.0,
+        "maximum": 24.0,
         "unit": "hours",
         "description": "Daily screen exposure in hours"
       },
       "Productivity_Score": {
         "type": "float",
+        "nullable": false,
+        "minimum": 0.0,
+        "maximum": 100.0,
         "unit": "index",
         "description": "Productivity rating score from 0.0 to 100.0"
       },
       "Age_Group": {
         "type": "category",
+        "nullable": false,
         "options": ["18-24", "25-34", "35-44", "45+"],
         "description": "Demographic age range classification"
       },
       "Profession": {
         "type": "category",
+        "nullable": false,
         "options": ["Manager", "Student", "Designer", "Data Analyst", "Software Engineer"],
         "description": "Primary workspace role classification"
       }
@@ -145,25 +185,34 @@
       "Customer_ID": {
         "type": "integer",
         "primary_key": true,
+        "nullable": false,
         "description": "Unique loyalty customer identifier"
       },
       "Discount_Rate": {
         "type": "float",
+        "nullable": false,
+        "minimum": 0.0,
+        "maximum": 1.0,
         "unit": "ratio",
         "description": "Discount percentage rate depth (e.g. 0.1 for 10% off)"
       },
       "Retained": {
         "type": "integer",
+        "nullable": false,
         "options": [0, 1],
         "description": "Binary retention status indicator (1 = Retained, 0 = Churned)"
       },
       "Tenure_Months": {
         "type": "integer",
+        "nullable": false,
+        "minimum": 0,
         "unit": "months",
         "description": "Length of customer contract/subscription in months"
       },
       "Total_Spend": {
         "type": "float",
+        "nullable": false,
+        "minimum": 0.0,
         "unit": "USD",
         "description": "Total spend by customer in dollars"
       }

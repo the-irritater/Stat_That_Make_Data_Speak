@@ -219,3 +219,32 @@ def test_dataloader_validation_edge_cases(tmp_path):
     invalid_opt_df = pd.DataFrame({"id": [1, 2], "val_int": [0, 2], "val_float": [1.5, 2.5]})
     with pytest.raises(ValueError, match="has values outside allowed set"):
         loader.validate_dataframe(invalid_opt_df, "custom_dataset")
+
+    # 8. Minimum/maximum numeric validation checks
+    custom_schema_minmax = {
+        "custom_dataset_minmax": {
+            "columns": {
+                "id": {"type": "integer", "primary_key": True, "nullable": False},
+                "val_float": {"type": "float", "nullable": False, "minimum": 1.0, "maximum": 5.0},
+            }
+        }
+    }
+    schema_file_minmax = tmp_path / "schema_minmax.json"
+    with open(schema_file_minmax, "w") as f:
+        json.dump(custom_schema_minmax, f)
+
+    loader_minmax = TestLoader(schema_path=schema_file_minmax)
+
+    # Valid dataframe
+    valid_minmax_df = pd.DataFrame({"id": [1, 2], "val_float": [1.5, 4.5]})
+    assert loader_minmax.validate_dataframe(valid_minmax_df, "custom_dataset_minmax") is True
+
+    # Below minimum
+    invalid_min_df = pd.DataFrame({"id": [1, 2], "val_float": [0.5, 4.5]})
+    with pytest.raises(ValueError, match="has values below minimum limit 1.0"):
+        loader_minmax.validate_dataframe(invalid_min_df, "custom_dataset_minmax")
+
+    # Above maximum
+    invalid_max_df = pd.DataFrame({"id": [1, 2], "val_float": [1.5, 5.5]})
+    with pytest.raises(ValueError, match="has values above maximum limit 5.0"):
+        loader_minmax.validate_dataframe(invalid_max_df, "custom_dataset_minmax")

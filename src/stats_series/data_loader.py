@@ -125,4 +125,26 @@ class DataLoader:
                         f"{invalid.unique().tolist()[:5]}"
                     )
 
+            # 2g. Minimum value validation
+            if "minimum" in col_meta and pd.api.types.is_numeric_dtype(df[col_name]):
+                non_null_vals = df[col_name].dropna()
+                invalid_min = non_null_vals[non_null_vals < col_meta["minimum"]]
+                if len(invalid_min) > 0:
+                    raise ValueError(
+                        f"Validation failed for dataset '{name}': column '{col_name}' "
+                        f"has values below minimum limit {col_meta['minimum']}: "
+                        f"{invalid_min.unique().tolist()[:5]}"
+                    )
+
+            # 2h. Maximum value validation
+            if "maximum" in col_meta and pd.api.types.is_numeric_dtype(df[col_name]):
+                non_null_vals = df[col_name].dropna()
+                invalid_max = non_null_vals[non_null_vals > col_meta["maximum"]]
+                if len(invalid_max) > 0:
+                    raise ValueError(
+                        f"Validation failed for dataset '{name}': column '{col_name}' "
+                        f"has values above maximum limit {col_meta['maximum']}: "
+                        f"{invalid_max.unique().tolist()[:5]}"
+                    )
+
         return True

@@ -303,32 +303,32 @@ elif analysis_option == "Customer Spend & Browsing (Linear Regression)":
             with r_col:
                 st.metric("Train R-squared", f"{train_r2:.2%}")
             with p_col:
-                st.metric("F-Statistic p-value", f"{model.f_pvalue:.4e}")
+                st.metric("F-Statistic p-value", f"{model_robust.f_pvalue:.4e}")
             with rmse_col:
                 st.metric("Test RMSE (Baseline)", f"${model_rmse:.2f} (${base_rmse:.2f})")
             with reduction_col:
                 st.metric("Error Reduction vs Baseline", f"{error_reduction:.1f}%")
 
             # Coefficient breakdown including Standardized Beta weights and Confidence Intervals
-            st.write("**Model Coefficients, Confidence Intervals & Standardized Effect Sizes:**")
+            st.write("**Model Coefficients, Confidence Intervals & Standardized Effect Sizes (HC3 Robust):**")
 
-            conf_int = model.conf_int()
+            conf_int = model_robust.conf_int()
             std_y = train_df["Total_Spend"].std()
 
             betas = []
-            for var in model.params.index:
+            for var in model_robust.params.index:
                 if var == "Intercept":
                     betas.append(np.nan)
                 else:
                     std_x = train_df[var].std()
-                    betas.append(model.params[var] * (std_x / std_y))
+                    betas.append(model_robust.params[var] * (std_x / std_y))
 
             summary_df = pd.DataFrame(
                 {
-                    "Coefficient": model.params,
-                    "Std Error": model.bse,
-                    "t-value": model.tvalues,
-                    "p-value": model.pvalues,
+                    "Coefficient": model_robust.params,
+                    "Std Error": model_robust.bse,
+                    "t-value": model_robust.tvalues,
+                    "p-value": model_robust.pvalues,
                     "[0.025": conf_int[0],
                     "0.975]": conf_int[1],
                     "Standardized Beta": betas,
@@ -452,21 +452,6 @@ elif analysis_option == "Marketing Campaign A/B Test (Inference)":
         # Display high level metrics
         col1, col2 = st.columns([1, 2])
 
-        with col1:
-            st.subheader("Conversion Overview")
-            st.table(conv_summary.style.format({"Conversion_Rate": "{:.2%}"}))
-
-            # Download Conversion Summary
-            csv_conv = conv_summary.to_csv(index=False).encode("utf-8")
-            st.download_button(
-                label="📥 Download Summary CSV", data=csv_conv, file_name="conversion_summary.csv", mime="text/csv"
-            )
-
-            # Hypothesis test parameters
-            st.subheader("Statistical Hypothesis Test")
-            confidence_level = st.slider("Confidence Level:", 0.90, 0.99, 0.95, 0.01)
-            alpha = 1 - confidence_level
-
         # Run conversion tests
         control_group = df[df["Campaign_Group"] == "Control"]
         test_group = df[df["Campaign_Group"] == "Test"]
@@ -487,6 +472,56 @@ elif analysis_option == "Marketing Campaign A/B Test (Inference)":
         # Effect Size calculations
         lift = (p_t - p_c) / p_c
         cohens_h = 2 * (np.arcsin(np.sqrt(p_t)) - np.arcsin(np.sqrt(p_c)))
+
+        with col1:
+            st.subheader("Conversion Overview")
+            st.table(conv_summary.style.format({"Conversion_Rate": "{:.2%}"}))
+
+            # Download Conversion Summary
+            csv_conv = conv_summary.to_csv(index=False).encode("utf-8")
+            st.download_button(
+                label="📥 Download Summary CSV", data=csv_conv, file_name="conversion_summary.csv", mime="text/csv"
+            )
+
+            # Hypothesis test parameters
+            st.subheader("Decision Engine Parameters")
+            confidence_level = st.slider("Confidence Level:", 0.90, 0.99, 0.95, 0.01)
+            alpha = 1 - confidence_level
+
+            mpe = (
+                st.slider(
+                    "Minimum Practical Effect (MPE, % Absolute):",
+                    0.0,
+                    5.0,
+                    1.0,
+                    0.1,
+                    help="Minimum absolute increase in conversion rate required to justify rollout.",
+                )
+                / 100
+            )
+
+            st.subheader("💰 Profitability Parameters")
+            clv = st.number_input(
+                "Gross Margin per Conversion ($):",
+                min_value=1.0,
+                value=50.0,
+                step=5.0,
+                help="Customer Lifetime Value or average margin contribution per conversion.",
+            )
+            promo_cost = st.number_input(
+                "Promotional Cost per Test User ($):",
+                min_value=0.0,
+                value=2.0,
+                step=0.5,
+                help="Average cost of the promotion (e.g., discount value) distributed to each test user.",
+            )
+            fixed_cost = st.number_input(
+                "Fixed Campaign Setup Cost ($):",
+                min_value=0.0,
+                value=500.0,
+                step=100.0,
+                help="Total capital expenditure or engineering setup costs to launch the campaign.",
+            )
 
         # 95% Confidence Interval for difference
         z_crit = stats.norm.ppf(1 - alpha / 2)
@@ -509,7 +544,49 @@ elif analysis_option == "Marketing Campaign A/B Test (Inference)":
             fig.update_layout(plot_bgcolor="white", paper_bgcolor="white", showlegend=False)
             st.plotly_chart(fig, use_container_width=True)
 
-        st.subheader("Test Diagnostics")
+        st.write("---")
+        st.subheader("🔬 Multi-Dimensional A/B Test Diagnostics")
+
+        # Statistical Power Analysis
+        from statsmodels.stats.power import NormalIndPower
+
+        power_analysis = NormalIndPower()
+        power_ratio = t_total / c_total
+        try:
+            achieved_power = power_analysis.solve_power(
+                effect_size=cohens_h, nobs1=c_total, ratio=power_ratio, alpha=alpha, alternative="two-sided"
+            )
+        except Exception:
+            achieved_power = 0.0
+
+        # Sample-Ratio Mismatch (SRM) Check
+        n_total = c_total + t_total
+        expected_n = n_total / 2
+        chi2_srm = ((c_total - expected_n) ** 2 + (t_total - expected_n) ** 2) / expected_n
+        p_srm = stats.chi2.sf(chi2_srm, df=1)
+        srm_flagged = p_srm < 0.001
+
+        # Profitability Metrics
+        added_conversions = (p_t - p_c) * t_total
+        gross_revenue = added_conversions * clv
+        total_promo_cost = t_total * promo_cost
+        net_profit = gross_revenue - total_promo_cost - fixed_cost
+        roi = (net_profit / (total_promo_cost + fixed_cost)) * 100 if (total_promo_cost + fixed_cost) > 0 else 0.0
+
+        # Guardrail Metrics (Order Value comparison for buyers)
+        control_buyers = control_group[control_group["Converted"] == 1]["Purchase_Amount"]
+        test_buyers = test_group[test_group["Converted"] == 1]["Purchase_Amount"]
+        avg_spend_c = control_buyers.mean() if len(control_buyers) > 0 else 0.0
+        avg_spend_t = test_buyers.mean() if len(test_buyers) > 0 else 0.0
+
+        if len(control_buyers) > 1 and len(test_buyers) > 1:
+            t_stat_spend, p_val_spend = stats.ttest_ind(control_buyers, test_buyers, equal_var=False)
+        else:
+            t_stat_spend, p_val_spend = 0.0, 1.0
+
+        spend_degraded = (avg_spend_t < avg_spend_c) and (p_val_spend < 0.05)
+
+        # UI Diagnostics Grid
         res_col1, res_col2, res_col3, res_col4 = st.columns(4)
         with res_col1:
             st.metric("Z-Statistic", f"{z_stat:.4f}")
@@ -518,21 +595,109 @@ elif analysis_option == "Marketing Campaign A/B Test (Inference)":
         with res_col3:
             st.metric("Conversion Rate Lift", f"{lift:+.2%}")
         with res_col4:
-            st.metric("Cohen's h (Effect)", f"{cohens_h:.4f}")
+            st.metric("Statistical Power", f"{achieved_power:.2%}")
 
         st.markdown(f"**95% Confidence Interval for Conversion Difference:** `[{ci_lower:+.3%}, {ci_upper:+.3%}]`")
 
-        if p_val < alpha:
-            st.info(
-                f"**Result: Statistically Significant!** (p = {p_val:.4g} < {alpha:.2f})\n\n"
-                f"The promotional campaign group has a **{(p_t - p_c)*100:.2f}%** higher absolute conversion rate. "
-                "We reject the null hypothesis and recommend rolling out the new campaign."
+        # SRM and Guardrail Alerts
+        diag_col1, diag_col2 = st.columns(2)
+        with diag_col1:
+            st.write("**Sample-Ratio Mismatch (SRM) Guardrail:**")
+            if srm_flagged:
+                st.error(
+                    f"🚨 **SRM Detected! (p = {p_srm:.4e} < 0.001)**\n\n"
+                    f"Control: {c_total} users ({c_total/n_total:.1%}), Test: {t_total} users ({t_total/n_total:.1%}). "
+                    "The allocation ratio is highly unbalanced and statistically impossible by chance. "
+                    "This indicates selection bias or experiment implementation bugs. **Do not trust this test.**"
+                )
+            else:
+                st.success(
+                    f"✅ **No SRM Detected (p = {p_srm:.3f})**\n\n"
+                    f"Sample allocation Control ({c_total/n_total:.1%}) vs Test ({t_total/n_total:.1%}) "
+                    "is close to 50/50 and statistically balanced."
+                )
+
+        with diag_col2:
+            st.write("**Revenue Guardrail (Avg Order Value for Buyers):**")
+            guardrail_text = (
+                f"Control AOV: `${avg_spend_c:.2f}`, Test AOV: `${avg_spend_t:.2f}` (diff p-value: `{p_val_spend:.4f}`)"
+            )
+            if spend_degraded:
+                st.error(
+                    f"⚠️ **Revenue Degradation Alert!**\n\n"
+                    f"{guardrail_text}. Average spending significantly decreased in the test group, "
+                    "suggesting the conversion lift was driven by small-margin coupon seekers."
+                )
+            else:
+                st.success(
+                    f"✅ **AOV Guardrail Passed**\n\n"
+                    f"{guardrail_text}. No statistically significant drop in transaction sizes was detected."
+                )
+
+        # Financial Projection Output
+        st.write("---")
+        st.subheader("💰 Projected Campaign Profitability & ROI")
+        prof_col1, prof_col2, prof_col3 = st.columns(3)
+        with prof_col1:
+            st.metric("Projected Gross Revenue Lift", f"${gross_revenue:,.2f}")
+        with prof_col2:
+            st.metric("Projected Cost (Promo + Setup)", f"${total_promo_cost + fixed_cost:,.2f}")
+        with prof_col3:
+            st.metric("Estimated Net Profit / ROI", f"${net_profit:,.2f} ({roi:+.1f}%)")
+
+        # Decision Output
+        st.write("---")
+        st.subheader("💡 Decision Summary & Recommendations")
+
+        sig_passed = p_val < alpha
+        mpe_passed = diff >= mpe
+        power_passed = achieved_power >= 0.80
+        profit_passed = net_profit > 0
+        srm_passed = not srm_flagged
+        guardrail_passed = not spend_degraded
+
+        conditions = {
+            "Statistical Significance (p < α)": sig_passed,
+            "Meets Minimum Practical Effect (Lift >= MPE)": mpe_passed,
+            "No Sample-Ratio Mismatch (SRM)": srm_passed,
+            "Sufficient Statistical Power (>= 80%)": power_passed,
+            "Positive Campaign Profitability (ROI > 0)": profit_passed,
+            "AOV Guardrail Safe (No significant AOV drop)": guardrail_passed,
+        }
+
+        # Render list of checks
+        for cond, passed in conditions.items():
+            if passed:
+                st.markdown(f"✔ **Passed:** {cond}")
+            else:
+                st.markdown(f"❌ **Failed:** {cond}")
+
+        st.write("")
+
+        if sig_passed and mpe_passed and srm_passed and profit_passed and guardrail_passed:
+            st.success(
+                f"🎉 **Recommendation: Approve Rollout!**\n\n"
+                f"The promotional campaign achieves a statistically significant conversion lift (p = {p_val:.4g}) "
+                f"which exceeds the required MPE ({mpe*100:.1f}%). The campaign is projected to yield "
+                f"**${net_profit:,.2f}** in net profit (ROI: {roi:.1f}%), with no SRM issues or AOV degradation detected."
             )
         else:
+            reasons = []
+            if not sig_passed:
+                reasons.append("the conversion lift is not statistically significant")
+            if not mpe_passed:
+                reasons.append(f"the conversion lift ({diff*100:.2f}%) is below the MPE ({mpe*100:.1f}%)")
+            if srm_flagged:
+                reasons.append("a sample-ratio mismatch indicates a corrupted experiment")
+            if not profit_passed:
+                reasons.append("the campaign is projected to lose money due to promotional cost overhead")
+            if spend_degraded:
+                reasons.append("average order values dropped significantly, hurting unit margins")
+
             st.warning(
-                f"**Result: Not Statistically Significant.** (p = {p_val:.4g} >= {alpha:.2f})\n\n"
-                "The observed lift could be due to random chance. We fail to reject the null hypothesis. "
-                "Do not allocate budget to roll out this campaign based on conversions alone."
+                f"🛑 **Recommendation: Reject Rollout.**\n\n"
+                f"We fail to recommend rolling out this campaign because: " + ", and ".join(reasons) + ". "
+                "Consider redesigning the promotional structure or optimizing target segment criteria."
             )
 
 # ----------------- Study 3: Screen Time vs Productivity -----------------

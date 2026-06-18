@@ -7,14 +7,14 @@
 
 <!-- Identity & CI Status Badges -->
 <p align="center">
-  <a href="https://github.com/the-irritater/Stat_That_Make_Data_Speak">
+  <a href="https://github.com/the-irritater/Stats_That_Make_Data_Speak">
     <img src="https://img.shields.io/badge/🔮_StatSphere-Making_Data_Make_Sense-1A365D?style=for-the-badge&labelColor=0D1B2A&color=2B6CB0" alt="StatSphere" />
   </a>
   <a href="https://www.linkedin.com/in/sanman-kadam-7a4990374/">
     <img src="https://img.shields.io/badge/by-Sanman_Kadam-E53E3E?style=for-the-badge&labelColor=1A365D" alt="Author" />
   </a>
-  <a href="https://github.com/the-irritater/Stat_That_Make_Data_Speak/actions/workflows/tests.yml">
-    <img src="https://github.com/the-irritater/Stat_That_Make_Data_Speak/actions/workflows/tests.yml/badge.svg" alt="CI Build" />
+  <a href="https://github.com/the-irritater/Stats_That_Make_Data_Speak/actions/workflows/tests.yml">
+    <img src="https://github.com/the-irritater/Stats_That_Make_Data_Speak/actions/workflows/tests.yml/badge.svg" alt="CI Build" />
   </a>
   <a href="LICENSE">
     <img src="https://img.shields.io/badge/License-MIT-green?style=flat-square" alt="License" />
@@ -214,8 +214,8 @@ This project supports automated environment management using [Poetry](https://py
 Using setup helper script:
 ```bash
 # Clone the repository
-git clone https://github.com/the-irritater/Stat_That_Make_Data_Speak.git
-cd Stat_That_Make_Data_Speak
+git clone https://github.com/the-irritater/Stats_That_Make_Data_Speak.git
+cd Stats_That_Make_Data_Speak
 
 # Create a virtual environment and install packages automatically
 ./setup.sh --install-deps

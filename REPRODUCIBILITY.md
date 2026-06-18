@@ -104,7 +104,7 @@ The interactive dashboard can be deployed to Streamlit Community Cloud for publi
 2. **Streamlit Account:** Sign in to [Streamlit Community Cloud](https://share.streamlit.io/) using your GitHub account credentials.
 3. **New App:** Click the **"New app"** button.
 4. **App Settings:**
-   - **Repository:** Select `Stat_That_Make_Data_Speak` from the dropdown list.
+   - **Repository:** Select `Stats_That_Make_Data_Speak` from the dropdown list.
    - **Branch:** Select `main` (or the active production branch).
    - **Main file path:** Set this to `dashboard/interactive_dashboard.py`.
 5. **Advanced Settings (Optional):**

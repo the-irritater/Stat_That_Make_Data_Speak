@@ -18,9 +18,9 @@ We conducted a comprehensive end-to-end customer analytics study on e-commerce t
 
 ### 🏷️ RFM Customer Segmentation (Recency, Frequency, Monetary)
 We classified customers into three distinct value segments based on Recency, Frequency, and Monetary scores:
-1. **Champions (22.4% of base):** Highly engaged, high-spending frequent buyers. (Average tenure: 11.2 months, Mean lifetime spend: **$671.30**).
-2. **Loyal Customers (54.8% of base):** Regular shoppers with moderate lifetime spend. (Average tenure: 11.0 months, Mean lifetime spend: **$245.05**).
-3. **At-Risk / Lost (22.8% of base):** Churned or low-value transient shoppers. (Average tenure: 7.9 months, Mean lifetime spend: **$104.70**).
+1. **Champions (22.4% of base):** Highly engaged, high-spending frequent buyers. (Average Recency: **55.4 days**, Average Frequency: **7.1 purchases**, Mean lifetime spend: **$559.88**).
+2. **Loyal Customers (54.8% of base):** Regular shoppers with moderate lifetime spend. (Average Recency: **90.5 days**, Average Frequency: **4.0 purchases**, Mean lifetime spend: **$290.26**).
+3. **At-Risk / Lost (22.8% of base):** Churned or low-value transient shoppers. (Average Recency: **126.1 days**, Average Frequency: **1.6 purchases**, Mean lifetime spend: **$108.78**).
 
 ---
 
